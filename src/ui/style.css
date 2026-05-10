@@ -134,6 +134,34 @@ table.mapping td:first-child, table.sample td:first-child {
   color: var(--fg);
 }
 
+table.cases {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+table.cases td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid #f0ede5;
+}
+
+table.cases td:first-child {
+  font-weight: 600;
+}
+
+table.cases td.meaning {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+table.cases td.status {
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+table.cases tr.ok td.status { color: #2d7a3a; }
+table.cases tr.fail td.status { color: #b03030; font-weight: 600; }
+
 .landing footer {
   margin-top: 3rem;
   color: var(--muted);
