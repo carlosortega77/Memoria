@@ -162,6 +162,153 @@ table.cases td.status {
 table.cases tr.ok td.status { color: #2d7a3a; }
 table.cases tr.fail td.status { color: #b03030; font-weight: 600; }
 
+/* Builder */
+.builder-section { margin-top: 2rem; }
+
+.builder-header h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+}
+
+.builder-header p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #e8e5dd;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.progress span {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  color: var(--muted);
+  min-width: 5ch;
+  text-align: right;
+}
+
+.builder-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e2da;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.slot.done {
+  border-color: #b8d8c0;
+  background: #f4faf5;
+}
+
+.slot .pos {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.85rem;
+  min-width: 3ch;
+}
+
+.slot.done .pos {
+  color: #2d7a3a;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.chip {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid #d8d4ca;
+  border-radius: 999px;
+  background: #faf9f5;
+  cursor: pointer;
+  color: var(--fg);
+  transition: all 0.12s;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.chip.mine {
+  border-style: dashed;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.chip.custom.active {
+  background: #5e7c34;
+  border-color: #5e7c34;
+}
+
+/* Diagnóstico */
+.diag {
+  margin-top: 3rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e5e2da;
+  border-radius: 8px;
+  background: #faf9f5;
+}
+
+.diag > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.9rem;
+  list-style: none;
+}
+
+.diag > summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.15s;
+}
+
+.diag[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.diag section { margin-top: 1.25rem; }
+
 .landing footer {
   margin-top: 3rem;
   color: var(--muted);
