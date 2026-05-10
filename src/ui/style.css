@@ -1,0 +1,141 @@
+:root {
+  --bg: #faf9f5;
+  --fg: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #2c5f8d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.landing header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.landing .tagline {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.landing section {
+  margin-top: 2.5rem;
+}
+
+.landing h2 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.landing ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.landing li {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e2da;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background: white;
+}
+
+.landing li.empty {
+  color: var(--muted);
+  font-style: italic;
+  background: transparent;
+  border-style: dashed;
+}
+
+.preset-card {
+  border: 1px solid #e5e2da;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  background: white;
+}
+
+.preset-card strong {
+  font-size: 1.05rem;
+}
+
+.preset-card p {
+  margin: 0.4rem 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.preset-card h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 1rem 0 0.5rem;
+}
+
+table.mapping, table.sample {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+table.mapping td, table.sample td {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid #f0ede5;
+}
+
+table.mapping td:first-child, table.sample td:first-child {
+  font-weight: 600;
+  color: var(--accent);
+  width: 3rem;
+}
+
+.stats {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats li {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.stats li span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.landing footer {
+  margin-top: 3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
