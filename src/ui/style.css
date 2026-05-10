@@ -162,6 +162,135 @@ table.cases td.status {
 table.cases tr.ok td.status { color: #2d7a3a; }
 table.cases tr.fail td.status { color: #b03030; font-weight: 600; }
 
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 0 1rem;
+  border-bottom: 1px solid #e5e2da;
+}
+
+.tab {
+  font: inherit;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.tab:hover { color: var(--fg); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab-pane { margin-top: 1rem; }
+
+/* Trainer */
+.trainer-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  border: 1px dashed #d8d4ca;
+  border-radius: 12px;
+  background: white;
+}
+
+.trainer-empty h3 { margin: 0 0 0.5rem; }
+.trainer-empty p { margin: 0.25rem 0; color: var(--muted); }
+.trainer-stats { font-size: 0.85rem; }
+
+.trainer-card {
+  padding: 2rem 1.5rem;
+  border: 1px solid #e5e2da;
+  border-radius: 12px;
+  background: white;
+  text-align: center;
+}
+
+.trainer-due {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+}
+
+.trainer-prompt {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin: 0 0 0.5rem;
+}
+
+.trainer-prompt.word { letter-spacing: normal; }
+
+.trainer-hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.trainer-reveal {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: white;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.12s;
+}
+
+.trainer-reveal:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.trainer-answer {
+  font-size: 2.5rem;
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  background: #f4faf5;
+  border-radius: 8px;
+}
+
+.trainer-ratings {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.trainer-ratings .rate {
+  font: inherit;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid #d8d4ca;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.12s;
+}
+
+.trainer-ratings .rate.again { border-color: #d4aaaa; color: #b03030; }
+.trainer-ratings .rate.hard  { border-color: #d4c5aa; color: #8d6020; }
+.trainer-ratings .rate.good  { border-color: #aac5d4; color: #2c5f8d; }
+.trainer-ratings .rate.easy  { border-color: #aad4b8; color: #2d7a3a; }
+
+.trainer-ratings .rate:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
 /* Builder */
 .builder-section { margin-top: 2rem; }
 
