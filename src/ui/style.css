@@ -2159,6 +2159,206 @@ table.cases tr.fail td.status { color: var(--error); }
   padding: var(--s-6) var(--s-4);
 }
 
+/* Dojo diario — la rutina prescrita de 15 min */
+.dojo-header h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 2rem;
+  margin: 0 0 var(--s-2);
+  letter-spacing: -0.02em;
+}
+
+.dojo-header p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-5);
+  max-width: 52ch;
+}
+
+.dojo-phases {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.dojo-phase {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+
+.dp-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--umber);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.dp-body h4 {
+  margin: 0 0 var(--s-1);
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  font-size: 1.15rem;
+}
+
+.dp-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.dp-body small {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-top: var(--s-1);
+  font-style: italic;
+}
+
+.dp-go {
+  font: inherit;
+  font-family: 'Inter', sans-serif;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.dp-go:hover {
+  background: var(--umber);
+  border-color: var(--umber);
+}
+
+/* Runner — cabecera para fases activas */
+.dojo-runner-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding: var(--s-2) var(--s-3);
+  background: var(--ink);
+  color: var(--paper);
+  margin-bottom: var(--s-4);
+  flex-wrap: wrap;
+}
+
+.dojo-runner-head.simple {
+  justify-content: space-between;
+}
+
+.dojo-runner-head .btn-secondary {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--paper);
+  padding: 4px var(--s-2);
+  font-size: 0.78rem;
+}
+
+.drh-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.drh-progress, .drh-score {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.drh-score {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.drh-chrono {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 1rem;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Resultado de una fase */
+.dojo-result {
+  text-align: center;
+  padding: var(--s-5) var(--s-4);
+}
+
+.dojo-result h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 2rem;
+  margin: 0 0 var(--s-4);
+}
+
+.result-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-5);
+  margin: var(--s-4) 0;
+  padding: var(--s-3);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+}
+
+.rs-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.rs-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.rs-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 72, 'wght' 600;
+  font-size: 1.4rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.cierre-coda {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin: var(--s-3) 0 var(--s-4);
+}
+
 /* Cadena de 20 — visualización + recuperación en frío */
 .chain-scene {
   margin: var(--s-4) 0;
