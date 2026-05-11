@@ -537,3 +537,127 @@ table.cases tr.fail td.status { color: var(--danger); font-weight: 600; }
   color: var(--muted);
   font-size: 0.95rem;
 }
+
+/* Fechas + Números — shared patterns */
+.fechas-intro p, .numeros-intro p {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.fechas-intro .rule {
+  font-style: italic;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.fechas-form, .numeros-form {
+  display: grid;
+  grid-template-columns: auto 1fr 2fr auto;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.fechas-form input, .numeros-form input {
+  font: inherit;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+}
+
+.fechas-form input:focus, .numeros-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.fechas-form button, .numeros-form button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.fechas-form button:hover, .numeros-form button:hover {
+  filter: brightness(1.08);
+}
+
+.fechas-table, .numeros-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.fechas-table th, .numeros-table th {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.fechas-table td, .numeros-table td {
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top;
+}
+
+.fechas-table .year, .fechas-table .compressed {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.fechas-table .compressed { color: var(--accent); }
+
+.numeros-table .number {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.encoded {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.check {
+  display: inline-block;
+  margin-left: 0.3rem;
+  color: var(--success);
+  font-weight: 700;
+}
+
+.numeros-table tr.ok td.assoc .encoded { color: var(--success); }
+.numeros-table tr.partial td.assoc .encoded { color: var(--warning); }
+
+.del {
+  font: inherit;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.del:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+@media (max-width: 600px) {
+  .fechas-form, .numeros-form {
+    grid-template-columns: 1fr;
+  }
+}
