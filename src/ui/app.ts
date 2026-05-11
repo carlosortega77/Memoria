@@ -7,6 +7,7 @@ import type { TrainerStore } from '../core/training/store';
 import type { Storage } from '../persistence/local-storage';
 import { mountCasilleroBuilder } from './casillero-builder';
 import { mountMajorTrainer } from './major-trainer';
+import { mountLearn } from '../learn';
 import { createHashRouter, type Route } from './router';
 
 export interface BootContext {
@@ -16,7 +17,7 @@ export interface BootContext {
   trainerStore: TrainerStore;
 }
 
-const BUILTIN_ROUTES = ['builder', 'trainer', 'diag'] as const;
+const BUILTIN_ROUTES = ['learn', 'builder', 'trainer', 'diag'] as const;
 
 export function mountApp(root: HTMLElement, boot: BootContext): void {
   const encoder = createMajorEncoder(MAJOR_CAMPAYO);
@@ -31,11 +32,12 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
   const validRoutes = [...BUILTIN_ROUTES, ...appRoutes];
 
   const router = createHashRouter({
-    defaultRoute: 'builder',
+    defaultRoute: 'learn',
     validRoutes,
   });
 
   const navItems: Array<{ route: Route; label: string }> = [
+    { route: 'learn', label: 'Aprender' },
     { route: 'builder', label: 'Construir' },
     { route: 'trainer', label: 'Entrenar' },
     ...boot.registry.list().map((a) => ({ route: a.route, label: a.name })),
@@ -70,6 +72,9 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
     if (!mount) return;
 
     switch (active) {
+      case 'learn':
+        mountLearn(mount, appCtx);
+        return;
       case 'builder':
         mountCasilleroBuilder(mount, CASILLERO_CAMPAYO, boot.casilleroStore);
         return;

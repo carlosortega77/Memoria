@@ -661,3 +661,325 @@ table.cases tr.fail td.status { color: var(--danger); font-weight: 600; }
     grid-template-columns: 1fr;
   }
 }
+
+/* Learn module */
+.learn-lead {
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
+.lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.lesson-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+}
+
+.lesson-card.done {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.lesson-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 1.5rem;
+}
+
+.lesson-card.done .lesson-num { color: var(--success); }
+
+.lesson-body h4 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.lesson-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lesson-check {
+  color: var(--success);
+  font-weight: 700;
+}
+
+.lesson-body p {
+  margin: 0.25rem 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lesson-time {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lesson-start {
+  font: inherit;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.lesson-card.done .lesson-start {
+  background: white;
+  color: var(--accent);
+}
+
+.lesson-start:hover { filter: brightness(1.08); }
+
+.lesson-celebrate-msg {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: 8px;
+  text-align: center;
+  color: var(--success);
+}
+
+/* Lesson content */
+.lesson h3 {
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+}
+
+.lesson-lead {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+.lesson h4 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lesson p { line-height: 1.55; }
+.lesson .words {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.lesson-chain {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.chain-link {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.link-from, .link-to {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.link-arrow {
+  margin: 0 0.4rem;
+  color: var(--muted);
+}
+
+.link-scene {
+  margin: 0.5rem 0 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lesson-keys li {
+  margin-bottom: 0.4rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.lesson-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn-primary {
+  font: inherit;
+  padding: 0.65rem 1.5rem;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary:disabled {
+  background: #c0bfb8;
+  border-color: #c0bfb8;
+  cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+.btn-secondary {
+  font: inherit;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--fg);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lesson-tip {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* Lesson L2 — Mayor quiz */
+.mapping-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+}
+
+.mapping-table tr {
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.mapping-table tr.current {
+  background: var(--success-bg);
+}
+
+.mapping-table td {
+  padding: 0.4rem 0.75rem;
+}
+
+.mapping-table .digit {
+  font-weight: 700;
+  color: var(--accent);
+  width: 3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  background: white;
+}
+
+.quiz-progress {
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quiz-progress span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.quiz-prompt {
+  text-align: center;
+  margin: 1rem 0 1.5rem;
+}
+
+.quiz-digit {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.quiz-hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+#quiz-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#quiz-input {
+  font: inherit;
+  flex: 1;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font-size: 1.1rem;
+}
+
+#quiz-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: white;
+}
+
+#quiz-form button {
+  font: inherit;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.quiz-feedback {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.quiz-feedback.ok { color: var(--success); }
+.quiz-feedback.fail { color: var(--danger); }
+
+.lesson-celebrate {
+  text-align: center;
+  padding: 2rem 1rem;
+}
