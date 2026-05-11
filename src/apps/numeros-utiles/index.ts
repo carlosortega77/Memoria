@@ -5,10 +5,19 @@ import { createNumerosStore, type NumerosStore } from './store';
 import {
   addNumero,
   applyNumerosReview,
-  digitsOnly,
+  getEntryById,
   removeNumero,
+  type NumeroEntry,
   type NumerosState,
 } from './state';
+import {
+  TYPE_METAS,
+  diffDigits,
+  digitsOnly,
+  formatVisual,
+  metaFor,
+  type NumeroType,
+} from './formats';
 import { withTransition } from '../../ui/transitions';
 
 type View = 'lista' | 'drill';
@@ -33,6 +42,7 @@ export const numerosApp: MemoriaApp = {
     let state: NumerosState = store.load();
     let view: View = 'lista';
     let revealed = false;
+    let selectedType: NumeroType = 'movil';
 
     function persist(next: NumerosState): void {
       state = next;
@@ -48,49 +58,92 @@ export const numerosApp: MemoriaApp = {
       `;
     }
 
+    function renderTypePicker(): string {
+      return `
+        <div class="type-picker" role="tablist">
+          ${TYPE_METAS.map(
+            (m) => `
+            <button class="type-pill ${selectedType === m.id ? 'active' : ''}"
+                    data-type="${m.id}" type="button" role="tab">${m.label}</button>
+          `,
+          ).join('')}
+        </div>
+      `;
+    }
+
+    function renderEncoderTheatre(): string {
+      // El "teatro del codificador" — debajo del form, muestra en vivo cómo
+      // la asociación va codificando los dígitos objetivo.
+      return `
+        <div class="encoder-theatre" id="encoder-theatre" data-empty="1">
+          <div class="theatre-lane">
+            <span class="theatre-label">Objetivo</span>
+            <div class="theatre-digits target" id="theatre-target">— —</div>
+          </div>
+          <div class="theatre-lane">
+            <span class="theatre-label">Tu asociación codifica</span>
+            <div class="theatre-digits encoded" id="theatre-encoded">—</div>
+          </div>
+          <div class="theatre-status" id="theatre-status">Selecciona tipo y escribe un número arriba.</div>
+        </div>
+      `;
+    }
+
+    function renderEntryRow(e: NumeroEntry): string {
+      const meta = metaFor(e.type);
+      const target = digitsOnly(e.number);
+      const encoded = ctx.encoder.encode(e.association).join('');
+      const ok = encoded.length > 0 && encoded === target;
+      const partial = encoded.length > 0 && !ok;
+      const displayNumber = formatVisual(e.number, e.type);
+      return `
+        <tr class="${ok ? 'ok' : partial ? 'partial' : ''}">
+          <td class="type-cell"><span class="type-chip">${meta.label}</span></td>
+          <td class="label">${escapeHtml(e.label)}</td>
+          <td class="number">${escapeHtml(displayNumber)}</td>
+          <td class="assoc">
+            ${e.association ? escapeHtml(e.association) : '<span class="assoc-empty">—</span>'}
+            ${ok
+              ? '<span class="encoder-ok">✓ codifica</span>'
+              : partial
+                ? `<span class="encoder-partial">codifica → ${encoded}</span>`
+                : ''}
+          </td>
+          <td class="actions">
+            <button class="del" data-id="${e.id}" aria-label="Eliminar">×</button>
+          </td>
+        </tr>
+      `;
+    }
+
     function renderLista(): string {
-      const rows = state.entries
-        .map((e) => {
-          const target = digitsOnly(e.number);
-          const encoded = ctx.encoder.encode(e.association).join('');
-          const ok = encoded.length > 0 && encoded === target;
-          return `
-            <tr class="${ok ? 'ok' : encoded ? 'partial' : ''}">
-              <td class="label">${escapeHtml(e.label)}</td>
-              <td class="number">${escapeHtml(e.number)}</td>
-              <td class="assoc">
-                ${escapeHtml(e.association)}
-                ${encoded ? `<span class="encoded">→ ${encoded}</span>` : ''}
-                ${ok ? '<span class="check">✓</span>' : ''}
-              </td>
-              <td class="actions">
-                <button class="del" data-id="${e.id}" aria-label="Eliminar">×</button>
-              </td>
-            </tr>
-          `;
-        })
-        .join('');
+      const meta = metaFor(selectedType);
+      const rows = state.entries.map((e) => renderEntryRow(e)).join('');
 
       return `
         <details class="how-it-works">
           <summary>Cómo funciona</summary>
           <p>
-            Añade números útiles: teléfonos, DNI, IBAN, matrículas. Crea una asociación cuyas consonantes Mayor formen los dígitos del número. El codificador comprueba ✓ si encaja.
+            Selecciona el <strong>tipo</strong> (móvil, DNI, IBAN, matrícula…). El número se mostrará con su formato canónico. La <strong>asociación</strong> debe contener palabras cuyas consonantes Mayor formen los dígitos del número. Verás en directo cómo la asociación cuadra con el objetivo.
           </p>
         </details>
 
+        ${renderTypePicker()}
+
         <form class="numeros-form" id="numeros-form">
-          <input type="text" name="label" placeholder="Etiqueta (ej. Móvil mamá)" required>
-          <input type="text" name="number" placeholder="Número (ej. 666123456)" required>
-          <input type="text" name="association" placeholder="Asociación inverosímil">
+          <input type="text" name="label" placeholder="${escapeHtml(meta.labelPlaceholder)}" required autocomplete="off">
+          <input type="text" name="number" placeholder="${escapeHtml(meta.placeholder)}" required autocomplete="off">
+          <input type="text" name="association" placeholder="Asociación inverosímil" autocomplete="off">
           <button type="submit">Añadir</button>
         </form>
+
+        ${renderEncoderTheatre()}
 
         ${state.entries.length === 0
           ? '<p class="empty">Aún no hay números. Añade uno arriba.</p>'
           : `
             <table class="numeros-table">
-              <thead><tr><th>Etiqueta</th><th>Número</th><th>Asociación</th><th></th></tr></thead>
+              <thead><tr><th>Tipo</th><th>Etiqueta</th><th>Número</th><th>Asociación</th><th></th></tr></thead>
               <tbody>${rows}</tbody>
             </table>
           `}
@@ -98,12 +151,12 @@ export const numerosApp: MemoriaApp = {
     }
 
     function renderDrill(): string {
-      const items = state.entries;
+      const items = state.drillItems;
       if (items.length === 0) {
         return `
           <div class="trainer-empty">
             <h3>Sin números todavía</h3>
-            <p>Añade al menos uno en <strong>Lista</strong>.</p>
+            <p>Añade al menos uno en <strong>Lista</strong> para empezar a drillar.</p>
           </div>
         `;
       }
@@ -113,36 +166,112 @@ export const numerosApp: MemoriaApp = {
         return `
           <div class="trainer-empty">
             <h3>Día completado</h3>
-            <p>${items.length} números en total. Vuelve más tarde.</p>
+            <p>${items.length} items en el trainer. Vuelve más tarde.</p>
           </div>
         `;
       }
+      const entry = getEntryById(state, item.numeroId);
+      if (!entry) return '<p class="empty">Entrada no encontrada.</p>';
+
+      const display = formatVisual(entry.number, entry.type);
+      const meta = metaFor(entry.type);
+      const isLabelToNum = item.direction === 'l2n';
+
+      const promptHtml = isLabelToNum
+        ? `<div class="trainer-prompt word">${escapeHtml(entry.label)}</div>
+           <div class="trainer-hint">¿Qué número? <span class="hint-meta">${meta.label} · etiqueta → número</span></div>`
+        : `<div class="trainer-prompt num">${escapeHtml(display)}</div>
+           <div class="trainer-hint">¿De qué es? <span class="hint-meta">${meta.label} · número → etiqueta</span></div>`;
+
+      const revealHtml = isLabelToNum
+        ? `<div class="pi-reveal-digits">${escapeHtml(display)}</div>
+           ${entry.association ? `<div class="pi-reveal-assoc">${escapeHtml(entry.association)}</div>` : ''}`
+        : `<div class="pi-reveal-image">${escapeHtml(entry.label)}</div>
+           ${entry.association ? `<div class="pi-reveal-assoc">${escapeHtml(entry.association)}</div>` : ''}`;
+
       return `
         <div class="trainer-card">
           <div class="trainer-due">${due} pendiente${due === 1 ? '' : 's'}</div>
-          <div class="trainer-prompt word">${escapeHtml(item.label)}</div>
-          <div class="trainer-hint">¿Qué número?</div>
-          ${
-            revealed
-              ? `
-              <div class="pi-reveal">
-                <div class="pi-reveal-digits">${escapeHtml(item.number)}</div>
-                ${item.association ? `<div class="pi-reveal-assoc">${escapeHtml(item.association)}</div>` : ''}
-              </div>
-              <div class="trainer-ratings">
-                <button class="rate again" data-rating="again">Otra vez</button>
-                <button class="rate hard" data-rating="hard">Difícil</button>
-                <button class="rate good" data-rating="good">Bien</button>
-                <button class="rate easy" data-rating="easy">Fácil</button>
-              </div>
-              `
-              : `<button class="trainer-reveal">Mostrar</button>`
-          }
+          ${promptHtml}
+          ${revealed
+            ? `<div class="pi-reveal">${revealHtml}</div>
+               <div class="trainer-ratings">
+                 <button class="rate again" data-rating="again">Otra vez</button>
+                 <button class="rate hard" data-rating="hard">Difícil</button>
+                 <button class="rate good" data-rating="good">Bien</button>
+                 <button class="rate easy" data-rating="easy">Fácil</button>
+               </div>`
+            : `<button class="trainer-reveal">Mostrar</button>`}
         </div>
       `;
     }
 
+    function updateEncoderTheatre(): void {
+      const form = root.querySelector<HTMLFormElement>('#numeros-form');
+      const target = root.querySelector<HTMLDivElement>('#theatre-target');
+      const encodedEl = root.querySelector<HTMLDivElement>('#theatre-encoded');
+      const status = root.querySelector<HTMLDivElement>('#theatre-status');
+      const theatre = root.querySelector<HTMLDivElement>('#encoder-theatre');
+      if (!form || !target || !encodedEl || !status || !theatre) return;
+
+      const numberInput = form.elements.namedItem('number') as HTMLInputElement | null;
+      const assocInput = form.elements.namedItem('association') as HTMLInputElement | null;
+      const rawNumber = numberInput?.value ?? '';
+      const targetDigits = digitsOnly(rawNumber);
+      const assocText = assocInput?.value ?? '';
+      const encodedDigits = ctx.encoder.encode(assocText).join('');
+
+      if (targetDigits === '' && assocText.trim() === '') {
+        theatre.dataset['empty'] = '1';
+        target.textContent = '— —';
+        encodedEl.textContent = '—';
+        status.textContent = 'Selecciona tipo y escribe un número arriba.';
+        return;
+      }
+      theatre.dataset['empty'] = '0';
+
+      // Target: renderizar dígitos como pares con highlight según match
+      const diff = diffDigits(encodedDigits, targetDigits);
+      const targetHtml = diff
+        .map((d) => {
+          if (d.status === 'match') return `<span class="d match">${d.digit}</span>`;
+          if (d.status === 'pending') return `<span class="d pending">${d.digit}</span>`;
+          return `<span class="d mismatch">${d.digit}</span>`;
+        })
+        .join('');
+      target.innerHTML = targetHtml || '— —';
+
+      // Encoded: la string que la asociación produce
+      encodedEl.textContent = encodedDigits || '—';
+
+      // Status
+      if (targetDigits === '') {
+        status.textContent = 'Escribe el número objetivo arriba.';
+      } else if (assocText.trim() === '') {
+        status.innerHTML = `<span class="theatre-target-summary">Objetivo: <strong>${targetDigits}</strong> (${targetDigits.length} dígitos). Escribe una asociación que codifique a esto.</span>`;
+      } else if (encodedDigits === targetDigits) {
+        status.innerHTML = `<span class="theatre-ok">✓ La asociación codifica exactamente al número.</span>`;
+      } else if (targetDigits.startsWith(encodedDigits)) {
+        const remaining = targetDigits.length - encodedDigits.length;
+        status.innerHTML = `<span class="theatre-progress">Vas bien — faltan <strong>${remaining}</strong> dígitos por encodear.</span>`;
+      } else {
+        status.innerHTML = `<span class="theatre-mismatch">Las consonantes Mayor de tu asociación no cuadran con el número objetivo.</span>`;
+      }
+    }
+
     function attachListaHandlers(): void {
+      // Type pills
+      root.querySelectorAll<HTMLButtonElement>('.type-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = btn.dataset['type'] as NumeroType | undefined;
+          if (!t || t === selectedType) return;
+          withTransition(() => {
+            selectedType = t;
+            render();
+          });
+        });
+      });
+
       const form = root.querySelector<HTMLFormElement>('#numeros-form');
       form?.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -151,17 +280,24 @@ export const numerosApp: MemoriaApp = {
         const number = String(data.get('number') ?? '').trim();
         const association = String(data.get('association') ?? '').trim();
         if (label === '' || number === '') return;
-        persist(addNumero(state, label, number, association));
-        render();
+        withTransition(() => {
+          persist(addNumero(state, selectedType, label, number, association));
+          render();
+        });
       });
+
+      form?.addEventListener('input', updateEncoderTheatre);
+      updateEncoderTheatre();
 
       root.querySelectorAll<HTMLButtonElement>('.del').forEach((btn) => {
         btn.addEventListener('click', () => {
           const id = btn.dataset['id'];
           if (!id) return;
           if (window.confirm('¿Eliminar este número?')) {
-            persist(removeNumero(state, id));
-            render();
+            withTransition(() => {
+              persist(removeNumero(state, id));
+              render();
+            });
           }
         });
       });
@@ -179,7 +315,7 @@ export const numerosApp: MemoriaApp = {
         btn.addEventListener('click', () => {
           const rating = btn.dataset['rating'] as Rating | undefined;
           if (!rating) return;
-          const item = pickNextDue(state.entries);
+          const item = pickNextDue(state.drillItems);
           if (!item) return;
           withTransition(() => {
             persist(applyNumerosReview(state, item.id, rating));

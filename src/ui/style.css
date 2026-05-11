@@ -1068,6 +1068,278 @@ table.cases tr.fail td.status { color: var(--error); }
 }
 
 /* ============================================================
+   Fechas — preview de compresión + validación + seed
+   ============================================================ */
+
+.seed-prompt {
+  margin: var(--s-3) 0 var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  background: color-mix(in srgb, var(--amber) 8%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--amber) 30%, var(--rule));
+  border-left: 3px solid var(--amber);
+}
+
+.seed-prompt p {
+  margin: 0 0 var(--s-2);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.year-compression {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  padding: var(--s-3) var(--s-4);
+  margin: var(--s-2) 0 var(--s-4);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.year-compression[data-empty="1"] {
+  opacity: 0.6;
+  border-left-color: var(--rule);
+}
+
+.yc-strike {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 72, 'wght' 500;
+  font-size: 1.6rem;
+  text-decoration: line-through;
+  text-decoration-color: var(--error);
+  text-decoration-thickness: 2px;
+  color: var(--ink-faint);
+}
+
+.yc-keep {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 600, 'SOFT' 30;
+  font-size: 3rem;
+  color: var(--umber);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.yc-era {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-left: auto;
+}
+
+.yc-valid {
+  flex-basis: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  padding-top: var(--s-1);
+  border-top: 1px dashed var(--rule-soft);
+  margin-top: var(--s-1);
+}
+
+.yc-valid.ok { color: var(--amber); font-weight: 600; }
+.yc-valid.partial { color: var(--umber); }
+
+/* En la tabla: visualización de año comprimido por fila */
+.fechas-table .year-cell {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.fechas-table .year-full {
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+.fechas-table .year-strike {
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--error);
+  text-decoration-thickness: 1.5px;
+  margin-right: 1px;
+}
+
+.fechas-table .year-keep {
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  color: var(--umber);
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.assoc-empty {
+  color: var(--ink-faint);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.fechas-table tr.ok td.assoc .encoder-ok,
+.numeros-table tr.ok td.assoc .encoder-ok {
+  color: var(--amber);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-left: var(--s-1);
+  font-style: normal;
+}
+
+.fechas-table tr.partial td.assoc .encoder-partial,
+.numeros-table tr.partial td.assoc .encoder-partial {
+  color: var(--umber);
+  font-size: 0.78rem;
+  font-style: italic;
+  margin-left: var(--s-1);
+}
+
+.hint-meta {
+  display: inline-block;
+  margin-left: var(--s-2);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  font-style: normal;
+}
+
+/* ============================================================
+   Números — type picker + teatro del codificador
+   ============================================================ */
+
+.type-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  margin: var(--s-3) 0;
+}
+
+.type-pill {
+  font: inherit;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid var(--rule);
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-weight: 500;
+  transition: all 140ms cubic-bezier(.2,.6,.2,1);
+  border-radius: 0;
+}
+
+.type-pill:hover {
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+
+.type-pill.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.type-chip {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+/* El teatro del codificador — pieza central de Números */
+.encoder-theatre {
+  margin: var(--s-3) 0 var(--s-5);
+  padding: var(--s-4);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--umber);
+}
+
+.encoder-theatre[data-empty="1"] {
+  opacity: 0.5;
+  border-left-color: var(--rule);
+}
+
+.theatre-lane {
+  margin-bottom: var(--s-2);
+}
+
+.theatre-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin-bottom: var(--s-1);
+}
+
+.theatre-digits {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 600;
+  font-size: 1.8rem;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums slashed-zero;
+  line-height: 1.1;
+}
+
+.theatre-digits.target { color: var(--ink); }
+.theatre-digits.encoded { color: var(--ink-soft); font-size: 1.5rem; }
+
+.theatre-digits .d {
+  display: inline-block;
+  min-width: 1ch;
+  margin-right: 1px;
+  transition: color 140ms, background 140ms;
+}
+
+.theatre-digits .d.match {
+  color: var(--amber);
+  font-weight: 700;
+}
+
+.theatre-digits .d.pending {
+  color: var(--ink-faint);
+}
+
+.theatre-digits .d.mismatch {
+  color: var(--error);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.theatre-status {
+  margin-top: var(--s-3);
+  padding-top: var(--s-2);
+  border-top: 1px dashed var(--rule-soft);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.theatre-status .theatre-ok { color: var(--amber); font-weight: 600; }
+.theatre-status .theatre-progress { color: var(--umber); }
+.theatre-status .theatre-mismatch { color: var(--error); }
+.theatre-status .theatre-target-summary strong {
+  color: var(--umber);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Type-cell column dedicada */
+.numeros-table .type-cell { white-space: nowrap; }
+
+/* ============================================================
    Learn module
    ============================================================ */
 
