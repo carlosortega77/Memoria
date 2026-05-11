@@ -100,14 +100,15 @@ export const piApp: MemoriaApp = {
         .join('');
 
       return `
-        <div class="pi-intro">
+        <details class="how-it-works">
+          <summary>Cómo funciona</summary>
           <p>
             Cada par de dígitos va a una <strong>estación</strong> del casillero (su posición en orden) y se "ve" como la <strong>imagen</strong> del valor (la palabra del casillero para ese número). Crea una escena inverosímil que una estación e imagen.
           </p>
           <p class="pi-fallback-note">
             Las palabras en <em>cursiva</em> son del preset (no las has elegido aún en Construir).
           </p>
-        </div>
+        </details>
         <div class="progress">
           <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
           <span>${totalDone} / ${total}</span>

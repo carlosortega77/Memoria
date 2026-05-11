@@ -70,7 +70,8 @@ export const fechasApp: MemoriaApp = {
         .join('');
 
       return `
-        <div class="fechas-intro">
+        <details class="how-it-works">
+          <summary>Cómo funciona</summary>
           <p>
             Campayo comprime el año antes de codificarlo:
             <span class="rule">s. XX → 2 últimos dígitos</span>,
@@ -80,7 +81,7 @@ export const fechasApp: MemoriaApp = {
           <p class="fechas-flow">
             Escribe el año, el evento y una <strong>asociación</strong> donde aparezca una palabra cuyos dígitos Mayor formen el año comprimido. El codificador lo verifica abajo en vivo.
           </p>
-        </div>
+        </details>
 
         <form class="fechas-form" id="fechas-form">
           <input type="number" name="year" placeholder="Año" required min="-3000" max="9999">

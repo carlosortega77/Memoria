@@ -21,32 +21,38 @@
 }
 
 :root {
-  /* Paleta — Códice Mnemónico */
+  /* Paleta — Códice Mnemónico (refinada vía skill ui-ux-pro-max) */
   --paper: #f3ede0;
   --paper-deep: #ece3d0;
   --paper-shade: #e0d5be;
   --ink: #1c1a14;
   --ink-soft: #6b6356;
   --ink-faint: #a39c8b;
-  --rubric: #8b1e1e;
-  --rubric-pale: #b85a4a;
-  --gold: #a07a2c;
-  --gold-pale: #c9a861;
+  /* Acento primario: umber cálido, no rojo. Reduce la "alarma" difusa. */
+  --umber: #7B4F2A;
+  --umber-pale: #a87a4f;
+  /* Logro: ámbar confidente. */
+  --amber: #D97706;
+  --amber-pale: #f4b14a;
+  /* Rojo RÚBRICA: ahora reservado para errores/destructivos. */
+  --error: #8b1e1e;
   --rule: #c9bfa8;
   --rule-soft: #ddd3bb;
 
-  /* Compatibilidad temporal con código aún sin migrar */
+  /* Aliases semánticos */
   --bg: var(--paper);
   --fg: var(--ink);
   --muted: var(--ink-soft);
-  --accent: var(--rubric);
+  --accent: var(--umber);
+  --rubric: var(--umber);          /* legacy: la mayoría de usos eran "accent" */
+  --gold: var(--amber);            /* legacy: gold = amber */
   --border: var(--rule);
   --border-soft: var(--rule-soft);
-  --success: var(--gold);
-  --success-bg: color-mix(in srgb, var(--gold) 12%, var(--paper));
-  --success-border: color-mix(in srgb, var(--gold) 40%, var(--rule));
-  --warning: var(--gold);
-  --danger: var(--rubric);
+  --success: var(--amber);
+  --success-bg: color-mix(in srgb, var(--amber) 12%, var(--paper));
+  --success-border: color-mix(in srgb, var(--amber) 40%, var(--rule));
+  --warning: var(--amber);
+  --danger: var(--error);
 
   /* Ritmo espacial — escala Fibonacci-ish */
   --s-1: 4px;
@@ -304,7 +310,7 @@ table.cases td.status {
 }
 
 table.cases tr.ok td.status { color: var(--gold); }
-table.cases tr.fail td.status { color: var(--rubric); }
+table.cases tr.fail td.status { color: var(--error); }
 
 .stats {
   display: flex;
@@ -385,10 +391,10 @@ table.cases tr.fail td.status { color: var(--rubric); }
   gap: var(--s-1);
 }
 
-/* Rejilla 10×10 — el códice como matriz visible */
+/* Rejilla — móvil 5×20 (touch targets ≥44pt), desktop 10×10 */
 .casillero-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 2px;
   margin: var(--s-3) 0 var(--s-4);
   padding: var(--s-2);
@@ -396,11 +402,17 @@ table.cases tr.fail td.status { color: var(--rubric); }
   border: 1px solid var(--rule);
 }
 
+@media (min-width: 600px) {
+  .casillero-grid {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
 .cell {
   font: inherit;
-  aspect-ratio: 1 / 1.15;
-  min-height: 38px;
-  padding: 4px 4px 5px;
+  aspect-ratio: 1 / 1.05;
+  min-height: 48px;
+  padding: 5px 6px 6px;
   border: 1px solid var(--rule-soft);
   background: var(--paper);
   cursor: pointer;
@@ -411,6 +423,14 @@ table.cases tr.fail td.status { color: var(--rubric); }
   justify-content: space-between;
   overflow: hidden;
   transition: all 140ms cubic-bezier(.2,.6,.2,1);
+}
+
+@media (min-width: 600px) {
+  .cell {
+    aspect-ratio: 1 / 1.15;
+    min-height: 44px;
+    padding: 4px 4px 5px;
+  }
 }
 
 .cell:hover {
@@ -714,17 +734,17 @@ table.cases tr.fail td.status { color: var(--rubric); }
   transition: all 140ms cubic-bezier(.2,.6,.2,1);
 }
 
-.trainer-ratings .rate.again { color: var(--rubric); }
-.trainer-ratings .rate.hard  { color: var(--gold); }
+.trainer-ratings .rate.again { color: var(--error); }
+.trainer-ratings .rate.hard  { color: var(--umber); }
 .trainer-ratings .rate.good  { color: var(--ink); }
-.trainer-ratings .rate.easy  { color: var(--ink); font-style: italic; }
+.trainer-ratings .rate.easy  { color: var(--amber); font-style: italic; }
 
 .trainer-ratings .rate:hover {
   background: var(--paper-shade);
 }
 
-.trainer-ratings .rate.again:hover { background: color-mix(in srgb, var(--rubric) 10%, var(--paper)); }
-.trainer-ratings .rate.easy:hover  { background: color-mix(in srgb, var(--gold) 12%, var(--paper)); }
+.trainer-ratings .rate.again:hover { background: color-mix(in srgb, var(--error) 10%, var(--paper)); }
+.trainer-ratings .rate.easy:hover  { background: color-mix(in srgb, var(--amber) 12%, var(--paper)); }
 
 /* ============================================================
    Subnav (interno a apps)
@@ -846,7 +866,7 @@ table.cases tr.fail td.status { color: var(--rubric); }
 }
 
 .pi-word.missing {
-  color: var(--rubric);
+  color: var(--error);
   font-weight: 600;
 }
 
@@ -1037,7 +1057,7 @@ table.cases tr.fail td.status { color: var(--rubric); }
   transition: color 140ms;
 }
 
-.del:hover { color: var(--rubric); }
+.del:hover { color: var(--error); }
 
 @media (max-width: 600px) {
   .fechas-form, .numeros-form {
@@ -1424,8 +1444,8 @@ table.cases tr.fail td.status { color: var(--rubric); }
   font-style: italic;
 }
 
-.quiz-feedback.ok { color: var(--gold); }
-.quiz-feedback.fail { color: var(--rubric); }
+.quiz-feedback.ok { color: var(--amber); }
+.quiz-feedback.fail { color: var(--error); }
 
 .lesson-celebrate {
   text-align: center;
@@ -1554,6 +1574,58 @@ table.cases tr.fail td.status { color: var(--rubric); }
 }
 
 /* ============================================================
+   How-it-works — intros colapsadas
+   ============================================================ */
+
+details.how-it-works {
+  margin: 0 0 var(--s-4);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  background: transparent;
+}
+
+details.how-it-works > summary {
+  padding: var(--s-2) var(--s-3);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  font-weight: 600;
+  list-style: none;
+  user-select: none;
+}
+
+details.how-it-works > summary::-webkit-details-marker { display: none; }
+
+details.how-it-works > summary::before {
+  content: '▸ ';
+  display: inline-block;
+  color: var(--umber);
+  transition: transform 140ms cubic-bezier(.2,.6,.2,1);
+  margin-right: var(--s-1);
+}
+
+details.how-it-works[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+details.how-it-works[open] > summary {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+details.how-it-works > *:not(summary) {
+  padding: var(--s-3) var(--s-3) var(--s-2);
+}
+
+details.how-it-works p {
+  margin: 0 0 var(--s-2);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  max-width: 56ch;
+}
+
+/* ============================================================
    El Taller (Diagnóstico reframed)
    ============================================================ */
 
@@ -1572,14 +1644,29 @@ table.cases tr.fail td.status { color: var(--rubric); }
 }
 
 /* ============================================================
-   View Transitions — el reveal mágico
+   View Transitions — sharp page turn (no crossfade líquido)
+   E-Ink/Paper aesthetic: "distinct page turns, sharp transitions"
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
+  @keyframes page-out {
+    to {
+      opacity: 0;
+      transform: translateX(-14px);
+    }
+  }
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+  }
+
+  ::view-transition-old(root) {
+    animation: page-out 180ms cubic-bezier(.4, 0, 1, 1) forwards;
+  }
   ::view-transition-new(root) {
-    animation-duration: 280ms;
-    animation-timing-function: cubic-bezier(.2,.6,.2,1);
+    animation: page-in 220ms cubic-bezier(0, 0, .2, 1) forwards;
   }
 
   /* Reveal de la respuesta en el trainer — caligráfica */
@@ -1603,4 +1690,82 @@ table.cases tr.fail td.status { color: var(--rubric); }
   .pi-reveal-assoc {
     animation: caligraphic-in 280ms 180ms both cubic-bezier(.2,.6,.2,1);
   }
+
+  /* ===== Stagger: rating buttons en trainer ===== */
+  @keyframes stagger-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .trainer-ratings .rate {
+    animation: stagger-in 220ms cubic-bezier(.2,.6,.2,1) both;
+  }
+  .trainer-ratings .rate:nth-child(1) { animation-delay: 60ms; }
+  .trainer-ratings .rate:nth-child(2) { animation-delay: 100ms; }
+  .trainer-ratings .rate:nth-child(3) { animation-delay: 140ms; }
+  .trainer-ratings .rate:nth-child(4) { animation-delay: 180ms; }
+
+  /* ===== Stagger: lesson cards en learn-index ===== */
+  .lesson-list .lesson-card {
+    animation: stagger-in 240ms cubic-bezier(.2,.6,.2,1) both;
+  }
+  .lesson-list .lesson-card:nth-child(1) { animation-delay: 0ms; }
+  .lesson-list .lesson-card:nth-child(2) { animation-delay: 60ms; }
+  .lesson-list .lesson-card:nth-child(3) { animation-delay: 120ms; }
+  .lesson-list .lesson-card:nth-child(4) { animation-delay: 180ms; }
+  .lesson-list .lesson-card:nth-child(5) { animation-delay: 240ms; }
+  .lesson-list .lesson-card:nth-child(6) { animation-delay: 300ms; }
+
+  /* ===== Stagger: drawer chips al cambiar de casilla focused ===== */
+  .drawer-options .chip {
+    animation: stagger-in 180ms cubic-bezier(.2,.6,.2,1) both;
+  }
+  .drawer-options .chip:nth-child(1) { animation-delay: 20ms; }
+  .drawer-options .chip:nth-child(2) { animation-delay: 50ms; }
+  .drawer-options .chip:nth-child(3) { animation-delay: 80ms; }
+  .drawer-options .chip:nth-child(4) { animation-delay: 110ms; }
+  .drawer-options .chip:nth-child(5) { animation-delay: 140ms; }
 }
+
+/* ============================================================
+   Reduced motion — global kill switch
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Focus visible — accesibilidad
+   ============================================================ */
+
+:focus { outline: none; }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+.chip:focus-visible,
+.cell:focus-visible,
+.nav-item:focus-visible,
+.subnav-item:focus-visible,
+.lesson-start:focus-visible,
+.trainer-reveal:focus-visible,
+.del:focus-visible,
+.lesson-card:focus-visible {
+  outline: 2px solid var(--umber);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Cursor pointer en elementos interactivos */
+.cell, .chip, .nav-item, .subnav-item, .lesson-card, .lesson-start,
+button:not(:disabled), a, summary {
+  cursor: pointer;
+}
+
+button:disabled { cursor: not-allowed; }

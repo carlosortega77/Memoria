@@ -72,11 +72,12 @@ export const numerosApp: MemoriaApp = {
         .join('');
 
       return `
-        <div class="numeros-intro">
+        <details class="how-it-works">
+          <summary>Cómo funciona</summary>
           <p>
             Añade números útiles: teléfonos, DNI, IBAN, matrículas. Crea una asociación cuyas consonantes Mayor formen los dígitos del número. El codificador comprueba ✓ si encaja.
           </p>
-        </div>
+        </details>
 
         <form class="numeros-form" id="numeros-form">
           <input type="text" name="label" placeholder="Etiqueta (ej. Móvil mamá)" required>
