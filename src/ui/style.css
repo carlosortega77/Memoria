@@ -2112,6 +2112,141 @@ table.cases tr.fail td.status { color: var(--error); }
   padding: var(--s-6) var(--s-4);
 }
 
+/* Cadena de 20 — visualización + recuperación en frío */
+.chain-scene {
+  margin: var(--s-4) 0;
+  padding: var(--s-4);
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+  border-left: 3px solid var(--umber);
+}
+
+.chain-words {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-family: 'Fraunces', Georgia, serif;
+  margin-bottom: var(--s-3);
+}
+
+.chain-w {
+  font-variation-settings: 'opsz' 96, 'wght' 600;
+  font-size: 2.2rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.chain-w.from { color: var(--umber); }
+.chain-w.to { color: var(--umber); }
+
+.chain-arrow {
+  font-size: 1.6rem;
+  color: var(--ink-faint);
+}
+
+.chain-scene-text {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+}
+
+.visualize-tip {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  text-align: center;
+  font-style: italic;
+  margin: var(--s-3) 0;
+  padding: var(--s-2) var(--s-3);
+  border-top: 1px dashed var(--rule-soft);
+  border-bottom: 1px dashed var(--rule-soft);
+}
+
+.recall-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  align-items: baseline;
+  margin: var(--s-3) 0;
+  padding: var(--s-3);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  min-height: 3rem;
+}
+
+.recall-w {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.recall-w.last { color: var(--umber); font-weight: 600; }
+
+.recall-sep {
+  color: var(--ink-faint);
+  margin: 0 2px;
+}
+
+.recall-current {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  font-size: 1.05rem;
+  color: var(--umber);
+  background: color-mix(in srgb, var(--umber) 10%, var(--paper));
+  padding: 1px 8px;
+  border-bottom: 2px solid var(--umber);
+}
+
+.recall-prompt {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--ink);
+  text-align: center;
+  margin: var(--s-3) 0 var(--s-2);
+}
+
+#recall-form {
+  display: flex;
+  gap: var(--s-2);
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+#recall-input {
+  font: inherit;
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  flex: 1;
+  padding: var(--s-2) var(--s-3);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+#recall-input:focus {
+  outline: none;
+  border-bottom-color: var(--umber);
+}
+
+#recall-form button {
+  font: inherit;
+  font-family: 'Inter', sans-serif;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
 /* Fabricar palabra-imagen */
 .builder-stats {
   display: flex;
