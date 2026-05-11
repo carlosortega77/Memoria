@@ -19,6 +19,7 @@ import {
   type NumeroType,
 } from './formats';
 import { withTransition } from '../../ui/transitions';
+import { getSelection } from '../../core/casillero/state';
 
 type View = 'lista' | 'drill';
 
@@ -151,12 +152,22 @@ export const numerosApp: MemoriaApp = {
 
         ${renderTypePicker()}
 
+        <div class="assoc-criteria" aria-label="Criterios para una buena asociación">
+          <span class="ac-title">Una buena escena</span>
+          <span class="ac-tags">vívida · en movimiento · multisensorial · inverosímil</span>
+        </div>
+
         <form class="numeros-form" id="numeros-form">
           <input type="text" name="label" placeholder="${escapeHtml(meta.labelPlaceholder)}" required autocomplete="off">
           <input type="text" name="number" placeholder="${escapeHtml(meta.placeholder)}" required autocomplete="off">
           <input type="text" name="association" placeholder="Asociación inverosímil" autocomplete="off">
           <button type="submit">Añadir</button>
         </form>
+
+        <div class="casillero-says" id="casillero-says" data-empty="1">
+          <span class="cs-label">Tu casillero dice</span>
+          <span class="cs-hint">— escribe un número arriba —</span>
+        </div>
 
         ${renderEncoderTheatre()}
 
@@ -227,12 +238,45 @@ export const numerosApp: MemoriaApp = {
       `;
     }
 
+    function casilleroWordsForPairs(targetDigits: string): readonly { pair: string; word: string; isUser: boolean }[] {
+      const user = ctx.casilleroStore.load(ctx.preset);
+      const out: { pair: string; word: string; isUser: boolean }[] = [];
+      for (let i = 0; i < targetDigits.length; i += 2) {
+        const pair = targetDigits.substring(i, i + 2);
+        if (pair.length < 2) {
+          // dígito impar suelto al final
+          const digit = Number(pair);
+          if (!Number.isNaN(digit)) {
+            const slot = ctx.preset.slots.find((s) => s.position === digit);
+            const sel = getSelection(user, digit);
+            out.push({
+              pair,
+              word: sel?.chosenWord ?? slot?.options[0] ?? '—',
+              isUser: !!sel,
+            });
+          }
+          continue;
+        }
+        const pos = Number(pair);
+        if (Number.isNaN(pos)) continue;
+        const slot = ctx.preset.slots.find((s) => s.position === pos);
+        const sel = getSelection(user, pos);
+        out.push({
+          pair,
+          word: sel?.chosenWord ?? slot?.options[0] ?? '—',
+          isUser: !!sel,
+        });
+      }
+      return out;
+    }
+
     function updateEncoderTheatre(): void {
       const form = root.querySelector<HTMLFormElement>('#numeros-form');
       const target = root.querySelector<HTMLDivElement>('#theatre-target');
       const encodedEl = root.querySelector<HTMLDivElement>('#theatre-encoded');
       const status = root.querySelector<HTMLDivElement>('#theatre-status');
       const theatre = root.querySelector<HTMLDivElement>('#encoder-theatre');
+      const casilleroPanel = root.querySelector<HTMLDivElement>('#casillero-says');
       if (!form || !target || !encodedEl || !status || !theatre) return;
 
       const numberInput = form.elements.namedItem('number') as HTMLInputElement | null;
@@ -241,6 +285,36 @@ export const numerosApp: MemoriaApp = {
       const targetDigits = digitsOnly(rawNumber);
       const assocText = assocInput?.value ?? '';
       const encodedDigits = ctx.encoder.encode(assocText).join('');
+
+      // Panel "Tu casillero dice"
+      if (casilleroPanel) {
+        if (targetDigits === '') {
+          casilleroPanel.dataset['empty'] = '1';
+          casilleroPanel.innerHTML = `
+            <span class="cs-label">Tu casillero dice</span>
+            <span class="cs-hint">— escribe un número arriba —</span>
+          `;
+        } else {
+          const pairs = casilleroWordsForPairs(targetDigits);
+          casilleroPanel.dataset['empty'] = '0';
+          casilleroPanel.innerHTML = `
+            <span class="cs-label">Tu casillero dice</span>
+            <div class="cs-pairs">
+              ${pairs
+                .map(
+                  (p) => `
+                <div class="cs-pair ${p.isUser ? 'user' : 'preset'}">
+                  <span class="cs-pair-digits">${p.pair}</span>
+                  <span class="cs-pair-word">${p.word}</span>
+                </div>
+              `,
+                )
+                .join('')}
+            </div>
+            <p class="cs-note">Materia prima para tu escena — encadénalas con interacciones inverosímiles.</p>
+          `;
+        }
+      }
 
       if (targetDigits === '' && assocText.trim() === '') {
         theatre.dataset['empty'] = '1';

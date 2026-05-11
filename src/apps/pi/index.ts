@@ -113,6 +113,10 @@ export const piApp: MemoriaApp = {
           <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
           <span>${totalDone} / ${total}</span>
         </div>
+        <div class="assoc-criteria" aria-label="Criterios para una buena asociación">
+          <span class="ac-title">Una buena escena</span>
+          <span class="ac-tags">vívida · en movimiento · multisensorial · inverosímil</span>
+        </div>
         <div class="pi-grid">${rows}</div>
       `;
     }

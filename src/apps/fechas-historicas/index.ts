@@ -13,6 +13,9 @@ import {
 import { compressYear } from './year-shortcut';
 import { SEED_FECHAS } from './dataset';
 import { withTransition } from '../../ui/transitions';
+import { findLexicalCandidates } from '../../core/encoders/major/candidate-finder';
+import { SPANISH_DICTIONARY } from '../../data/dictionary-es';
+import { MAJOR_CAMPAYO } from '../../data/presets/major-campayo';
 
 type View = 'lista' | 'drill';
 
@@ -36,6 +39,7 @@ export const fechasApp: MemoriaApp = {
     let state: FechasState = store.load();
     let view: View = 'lista';
     let revealed = false;
+    let candidatesOpen = false;
 
     function persist(next: FechasState): void {
       state = next;
@@ -143,6 +147,11 @@ export const fechasApp: MemoriaApp = {
         </details>
 
         ${seedSection}
+
+        <div class="assoc-criteria" aria-label="Criterios para una buena asociación">
+          <span class="ac-title">Una buena escena</span>
+          <span class="ac-tags">vívida · en movimiento · multisensorial · inverosímil</span>
+        </div>
 
         <form class="fechas-form" id="fechas-form">
           <input type="number" name="year" placeholder="Año" required min="-3000" max="9999" autocomplete="off">
@@ -267,13 +276,61 @@ export const fechasApp: MemoriaApp = {
         validBadge = `<span class="yc-valid partial">codifica → ${encoded} (esperado ${keep})</span>`;
       }
 
+      // Consonantes esperadas para el patrón comprimido — el "troquel"
+      const consonantHint = keep
+        .split('')
+        .map((d) => {
+          const digit = Number(d);
+          const ps = MAJOR_CAMPAYO.mapping[digit as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9];
+          return ps.join('·').toUpperCase();
+        })
+        .join(' &nbsp;·&nbsp; ');
+
+      // Si los candidatos están abiertos, los calculamos y embebemos.
+      const candidates = candidatesOpen
+        ? findLexicalCandidates(keep, SPANISH_DICTIONARY, ctx.encoder, 24)
+        : [];
+      const candidatesBlock = candidatesOpen
+        ? candidates.length === 0
+          ? '<div class="yc-candidates"><span class="yc-candidates-empty">Sin palabras en el diccionario base con esas consonantes. Pista: prueba a partir el año en dos trozos.</span></div>'
+          : `<div class="yc-candidates">
+              <span class="yc-candidates-intro">Palabras Mayor-válidas (elige una para inspirar tu escena):</span>
+              <div class="yc-candidates-list">${candidates.map((w) => `<button type="button" class="yc-candidate" data-word="${w}">${w}</button>`).join('')}</div>
+            </div>`
+        : '';
+
       preview.dataset['empty'] = '0';
       preview.innerHTML = `
         ${strike ? `<span class="yc-strike">${strike}</span>` : ''}
         <span class="yc-keep">${keep}</span>
         <span class="yc-era">${eraLabel}</span>
+        <div class="yc-consonants">
+          <span class="yc-consonants-label">Consonantes Mayor</span>
+          <span class="yc-consonants-pattern">${consonantHint}</span>
+          <button type="button" class="yc-candidates-btn" id="yc-candidates-btn">${candidatesOpen ? 'Ocultar ↑' : 'Ver palabras posibles ↓'}</button>
+        </div>
+        ${candidatesBlock}
         ${validBadge}
       `;
+
+      const btn = preview.querySelector<HTMLButtonElement>('#yc-candidates-btn');
+      btn?.addEventListener('click', () => {
+        candidatesOpen = !candidatesOpen;
+        updateCompressionPreview();
+      });
+
+      preview.querySelectorAll<HTMLButtonElement>('.yc-candidate').forEach((c) => {
+        c.addEventListener('click', () => {
+          const word = c.dataset['word'] ?? '';
+          if (!word) return;
+          const assocEl = form?.elements.namedItem('association') as HTMLInputElement | null;
+          if (!assocEl) return;
+          const cur = assocEl.value.trim();
+          assocEl.value = cur ? `${cur} ${word}` : word;
+          assocEl.focus();
+          updateCompressionPreview();
+        });
+      });
     }
 
     function attachListaHandlers(): void {
