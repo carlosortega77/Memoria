@@ -1,23 +1,21 @@
 import type { UserCasillero } from '../casillero/state';
+import { createInitialReviewState, type Rating } from '../spaced-repetition/sm2';
 import {
-  createInitialReviewState,
-  isDue,
-  review,
-  type Rating,
-  type ReviewState,
-} from '../spaced-repetition/sm2';
+  applyReviewToItem,
+  countDue as countDueGeneric,
+  pickNextDue as pickNextDueGeneric,
+  type DrillItem,
+} from './drill-loop';
 
 // Cada casilla del usuario genera DOS items de drill:
 //  - número → palabra (recall directo)
 //  - palabra → número (recall inverso)
 export type DrillDirection = 'number-to-word' | 'word-to-number';
 
-export interface TrainerItem {
-  readonly id: string;
+export interface TrainerItem extends DrillItem {
   readonly position: number;
   readonly word: string;
   readonly direction: DrillDirection;
-  readonly review: ReviewState;
 }
 
 export interface TrainerState {
@@ -46,11 +44,11 @@ export function buildTrainerItems(user: UserCasillero): readonly TrainerItem[] {
   return items;
 }
 
-// Reconcilia el estado del trainer con la elección actual del casillero.
-// - Items cuya palabra ha cambiado → se reemplazan (review state perdido).
-// - Items removidos por el usuario → se borran.
-// - Items nuevos → se añaden con review inicial.
-// - Items existentes idénticos → se preservan (review state intacto).
+// Reconcilia el estado del trainer con la elección actual del casillero:
+//  - items existentes con palabra idéntica → se preservan (review state intacto)
+//  - items cuya palabra cambió → se reemplazan con review state inicial
+//  - items huérfanos (sin selección equivalente) → se eliminan
+//  - items nuevos → se añaden con review state inicial
 export function syncTrainerState(
   prev: TrainerState | null,
   user: UserCasillero,
@@ -66,30 +64,22 @@ export function syncTrainerState(
   return { items: merged, updatedAt: Date.now() };
 }
 
-export function pickNextDue(
-  state: TrainerState,
-  now: number = Date.now(),
-): TrainerItem | null {
-  const due = state.items.filter((i) => isDue(i.review, now));
-  if (due.length === 0) return null;
-  due.sort((a, b) => a.review.nextReviewAt - b.review.nextReviewAt);
-  return due[0] ?? null;
+export function pickNext(state: TrainerState, now?: number): TrainerItem | null {
+  return pickNextDueGeneric(state.items, now);
 }
 
-export function countDue(state: TrainerState, now: number = Date.now()): number {
-  return state.items.filter((i) => isDue(i.review, now)).length;
+export function countDue(state: TrainerState, now?: number): number {
+  return countDueGeneric(state.items, now);
 }
 
-export function applyReview(
+export function applyTrainerReview(
   state: TrainerState,
   itemId: string,
   rating: Rating,
   now: number = Date.now(),
 ): TrainerState {
   return {
-    items: state.items.map((item) =>
-      item.id === itemId ? { ...item, review: review(item.review, rating, now) } : item,
-    ),
+    items: applyReviewToItem(state.items, itemId, rating, now),
     updatedAt: now,
   };
 }

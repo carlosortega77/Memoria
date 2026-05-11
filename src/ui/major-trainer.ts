@@ -2,25 +2,19 @@ import type { CasilleroPreset } from '../core/casillero/types';
 import type { CasilleroStore } from '../core/casillero/store';
 import type { TrainerStore } from '../core/training/store';
 import {
-  applyReview,
+  applyTrainerReview,
   countDue,
-  pickNextDue,
+  pickNext,
   syncTrainerState,
   type TrainerState,
 } from '../core/training/major-trainer';
 import type { Rating } from '../core/spaced-repetition/sm2';
-
-export interface TrainerOptions {
-  // Llamado cuando el casillero del usuario puede haber cambiado (ej: vuelves al trainer).
-  onSync?: () => void;
-}
 
 export function mountMajorTrainer(
   root: HTMLElement,
   preset: CasilleroPreset,
   casilleroStore: CasilleroStore,
   trainerStore: TrainerStore,
-  _options: TrainerOptions = {},
 ): void {
   let state: TrainerState = sync();
   let revealed = false;
@@ -39,13 +33,13 @@ export function mountMajorTrainer(
       root.innerHTML = `
         <div class="trainer-empty">
           <h3>Sin casillas todavía</h3>
-          <p>Elige al menos una opción en el constructor de arriba para empezar a entrenar.</p>
+          <p>Ve a <strong>Construir</strong> y elige al menos una opción para empezar a entrenar.</p>
         </div>
       `;
       return;
     }
 
-    const item = pickNextDue(state);
+    const item = pickNext(state);
     const due = countDue(state);
 
     if (!item) {
@@ -102,7 +96,7 @@ export function mountMajorTrainer(
         btn.addEventListener('click', () => {
           const rating = btn.dataset['rating'] as Rating | undefined;
           if (!rating) return;
-          state = applyReview(state, item.id, rating);
+          state = applyTrainerReview(state, item.id, rating);
           trainerStore.save(state);
           revealed = false;
           render();
