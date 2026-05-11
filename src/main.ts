@@ -24,5 +24,5 @@ if (!root) throw new Error('Missing #app root element');
 mountApp(root, { registry, storage, casilleroStore, trainerStore });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+  navigator.serviceWorker.register(import.meta.env.BASE_URL + 'sw.js').catch(() => {});
 }
