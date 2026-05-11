@@ -6,6 +6,7 @@ import {
   pickNextDue as pickNextDueGeneric,
   type DrillItem,
 } from './drill-loop';
+import { emptyTiming, recordTiming, type TimingRecord } from './chronometer';
 
 // Cada casilla del usuario genera DOS items de drill:
 //  - número → palabra (recall directo)
@@ -16,6 +17,7 @@ export interface TrainerItem extends DrillItem {
   readonly position: number;
   readonly word: string;
   readonly direction: DrillDirection;
+  readonly timing: TimingRecord;
 }
 
 export interface TrainerState {
@@ -32,6 +34,7 @@ export function buildTrainerItems(user: UserCasillero): readonly TrainerItem[] {
       word: sel.chosenWord,
       direction: 'number-to-word',
       review: createInitialReviewState(),
+      timing: emptyTiming(),
     });
     items.push({
       id: `c:${sel.position}:w2n`,
@@ -39,6 +42,7 @@ export function buildTrainerItems(user: UserCasillero): readonly TrainerItem[] {
       word: sel.chosenWord,
       direction: 'word-to-number',
       review: createInitialReviewState(),
+      timing: emptyTiming(),
     });
   }
   return items;
@@ -81,5 +85,18 @@ export function applyTrainerReview(
   return {
     items: applyReviewToItem(state.items, itemId, rating, now),
     updatedAt: now,
+  };
+}
+
+export function recordTrainerTiming(
+  state: TrainerState,
+  itemId: string,
+  elapsedMs: number,
+): TrainerState {
+  return {
+    items: state.items.map((item) =>
+      item.id === itemId ? { ...item, timing: recordTiming(item.timing, elapsedMs) } : item,
+    ),
+    updatedAt: Date.now(),
   };
 }

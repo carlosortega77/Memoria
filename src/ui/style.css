@@ -647,6 +647,87 @@ table.cases tr.fail td.status { color: var(--error); }
   position: relative;
 }
 
+/* Cronómetro — la métrica del reflejo */
+.trainer-timing-record {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-4);
+  margin: var(--s-3) 0;
+  padding: var(--s-1) 0 var(--s-2);
+  border-bottom: 1px dashed var(--rule-soft);
+}
+
+.ttr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ttr-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+.ttr-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 600;
+  font-size: 0.95rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.chrono-live-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--s-2);
+  margin: var(--s-3) 0;
+  padding: var(--s-2) var(--s-3);
+  background: color-mix(in srgb, var(--umber) 5%, var(--paper));
+  border: 1px solid var(--rule-soft);
+  border-left: 3px solid var(--umber);
+}
+
+.chrono-live-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.chrono-live {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 1.15rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  min-width: 5ch;
+  text-align: left;
+}
+
+.chrono-final {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: var(--s-2) 0 var(--s-3);
+  text-align: center;
+}
+
+.chrono-final strong {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  margin-left: var(--s-1);
+}
+
 .trainer-due {
   font-size: 0.74rem;
   color: var(--ink-faint);
