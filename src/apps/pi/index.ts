@@ -2,9 +2,8 @@ import type { AppContext, MemoriaApp } from '../../core/app-contract';
 import { getSelection } from '../../core/casillero/state';
 import { countDue, pickNextDue } from '../../core/training/drill-loop';
 import type { Rating } from '../../core/spaced-repetition/sm2';
-import { getPairs } from './digits';
+import { getPairs, type PiPair } from './digits';
 import { createPiStore, type PiStore } from './store';
-import { withTransition } from '../../ui/transitions';
 import {
   applyPiReview,
   clearAssociation,
@@ -12,6 +11,7 @@ import {
   setAssociationText,
   type PiState,
 } from './state';
+import { withTransition } from '../../ui/transitions';
 
 type View = 'lista' | 'drill';
 
@@ -32,11 +32,19 @@ function getEffectiveWord(ctx: AppContext, position: number): EffectiveWord | nu
   return { word: first, isUserChoice: false };
 }
 
+function escapeHtml(s: string): string {
+  return s
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
 export const piApp: MemoriaApp = {
   id: 'pi',
   route: 'pi',
   name: 'π',
-  description: 'Primeros 200 dígitos en 100 pares.',
+  description: 'Primeros 200 dígitos en 100 pares — método cadena.',
   contentKind: 'digit-stream',
 
   mount(root: HTMLElement, ctx: AppContext): void {
@@ -61,39 +69,50 @@ export const piApp: MemoriaApp = {
     }
 
     function renderLista(): string {
-      const totalDone = state.associations.length;
-      const total = pairs.length;
-      const pct = Math.round((totalDone / total) * 100);
+      // Solo hay enlaces para los primeros N-1 pares.
+      const totalLinks = pairs.length - 1;
+      const linksDone = state.associations.filter((a) => a.pairIndex < totalLinks).length;
+      const pct = totalLinks > 0 ? Math.round((linksDone / totalLinks) * 100) : 0;
 
       const rows = pairs
-        .map((p) => {
-          const station = getEffectiveWord(ctx, p.index + 1);
+        .map((p: PiPair, idx) => {
           const image = getEffectiveWord(ctx, p.value);
+          const nextPair = pairs[idx + 1];
+          const isLast = !nextPair;
+          const nextImage = nextPair ? getEffectiveWord(ctx, nextPair.value) : null;
           const assoc = getAssociation(state, p.index);
-          const stationLabel = station
-            ? `<span class="pi-word${station.isUserChoice ? '' : ' fallback'}">${station.word}</span>`
-            : `<span class="pi-word missing">—</span>`;
+
           const imageLabel = image
-            ? `<span class="pi-word${image.isUserChoice ? '' : ' fallback'}">${image.word}</span>`
-            : `<span class="pi-word missing">—</span>`;
+            ? `<span class="pi-image-word${image.isUserChoice ? '' : ' fallback'}">${image.word}</span>`
+            : `<span class="pi-image-word missing">—</span>`;
+          const nextImageLabel = nextImage
+            ? `<span class="pi-image-word small${nextImage.isUserChoice ? '' : ' fallback'}">${nextImage.word}</span>`
+            : '<span class="pi-image-word small missing">—</span>';
+
           return `
-            <div class="pi-row ${assoc ? 'done' : ''}">
-              <div class="pi-head">
+            <div class="pi-chain-row ${assoc ? 'done' : ''} ${isLast ? 'last' : ''}">
+              <div class="pi-pair-head">
                 <span class="pi-idx">${String(p.index + 1).padStart(3, '0')}</span>
                 <span class="pi-digits">${p.digits}</span>
-              </div>
-              <div class="pi-words">
-                ${stationLabel}
-                <span class="pi-arrow">·</span>
+                <span class="pi-arrow">→</span>
                 ${imageLabel}
               </div>
-              <input
-                type="text"
-                class="pi-assoc"
-                placeholder="Escena inverosímil…"
-                data-pair="${p.index}"
-                value="${assoc ? assoc.text.replaceAll('"', '&quot;') : ''}"
-              />
+              ${
+                isLast
+                  ? '<div class="pi-link-end">— fin de la cadena —</div>'
+                  : `
+                    <div class="pi-link-row">
+                      <span class="pi-link-bridge">↳ enlace con ${nextImageLabel}</span>
+                      <input
+                        type="text"
+                        class="pi-assoc"
+                        placeholder="Escena inverosímil que une ${image?.word ?? '—'} con ${nextImage?.word ?? '—'}…"
+                        data-pair="${p.index}"
+                        value="${assoc ? assoc.text.replaceAll('"', '&quot;') : ''}"
+                      />
+                    </div>
+                  `
+              }
             </div>
           `;
         })
@@ -101,23 +120,22 @@ export const piApp: MemoriaApp = {
 
       return `
         <details class="how-it-works">
-          <summary>Cómo funciona</summary>
-          <p>
-            Cada par de dígitos va a una <strong>estación</strong> del casillero (su posición en orden) y se "ve" como la <strong>imagen</strong> del valor (la palabra del casillero para ese número). Crea una escena inverosímil que una estación e imagen.
-          </p>
-          <p class="pi-fallback-note">
-            Las palabras en <em>cursiva</em> son del preset (no las has elegido aún en Construir).
-          </p>
+          <summary>Cómo funciona — método cadena</summary>
+          <p>π se memoriza por <strong>pares</strong> en orden. Cada par tiene una palabra-imagen (la de tu casillero en el valor del par). Las escenas <strong>encadenan</strong> la imagen actual con la del par siguiente.</p>
+          <p>Ejemplo: par 1 vale <code>14</code> → imagen <strong>taco</strong>. Par 2 vale <code>15</code> → imagen <strong>tela</strong>. La escena: "Un taco gigante se rasga la tela del mantel mientras le caen cebollas encima". Luego "tela" encadena con la imagen del par 3, y así sucesivamente. Recitar π = caminar la cadena.</p>
         </details>
+
         <div class="progress">
           <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-          <span>${totalDone} / ${total}</span>
+          <span>${linksDone} / ${totalLinks}</span>
         </div>
+
         <div class="assoc-criteria" aria-label="Criterios para una buena asociación">
           <span class="ac-title">Una buena escena</span>
           <span class="ac-tags">vívida · en movimiento · multisensorial · inverosímil</span>
         </div>
-        <div class="pi-grid">${rows}</div>
+
+        <div class="pi-chain">${rows}</div>
       `;
     }
 
@@ -126,8 +144,8 @@ export const piApp: MemoriaApp = {
       if (items.length === 0) {
         return `
           <div class="trainer-empty">
-            <h3>Sin asociaciones todavía</h3>
-            <p>Vuelve a <strong>Lista</strong> y escribe al menos una escena.</p>
+            <h3>Sin enlaces todavía</h3>
+            <p>Vuelve a <strong>Lista</strong> y escribe al menos un enlace entre dos pares consecutivos.</p>
           </div>
         `;
       }
@@ -138,29 +156,30 @@ export const piApp: MemoriaApp = {
         return `
           <div class="trainer-empty">
             <h3>Día completado</h3>
-            <p>No hay asociaciones que repasar ahora.</p>
-            <p class="trainer-stats">${items.length} asociaciones en total.</p>
+            <p>No hay enlaces que repasar ahora.</p>
+            <p class="trainer-stats">${items.length} enlaces en total.</p>
           </div>
         `;
       }
       const pair = pairs[item.pairIndex];
-      if (!pair) return '<p class="empty">Pair fuera de rango.</p>';
+      const nextPair = pair ? pairs[item.pairIndex + 1] : undefined;
+      if (!pair || !nextPair) return '<p class="empty">Enlace fuera de rango.</p>';
 
-      const station = getEffectiveWord(ctx, pair.index + 1);
       const image = getEffectiveWord(ctx, pair.value);
+      const nextImage = getEffectiveWord(ctx, nextPair.value);
 
       return `
         <div class="trainer-card">
           <div class="trainer-due">${due} pendiente${due === 1 ? '' : 's'}</div>
-          <div class="trainer-prompt word">${station?.word ?? '—'}</div>
-          <div class="trainer-hint">Estación ${pair.index + 1}. ¿Qué viene aquí?</div>
+          <div class="trainer-prompt word">${image?.word ?? '—'}</div>
+          <div class="trainer-hint">Estás aquí. ¿Qué pareja viene después?</div>
           ${
             revealed
               ? `
             <div class="pi-reveal">
-              <div class="pi-reveal-digits">${pair.digits}</div>
-              <div class="pi-reveal-image">${image?.word ?? '—'}</div>
-              <div class="pi-reveal-assoc">${item.text}</div>
+              <div class="pi-reveal-digits">${nextPair.digits}</div>
+              <div class="pi-reveal-image">${nextImage?.word ?? '—'}</div>
+              <div class="pi-reveal-assoc">${escapeHtml(item.text)}</div>
             </div>
             <div class="trainer-ratings">
               <button class="rate again" data-rating="again">Otra vez</button>
@@ -198,7 +217,6 @@ export const piApp: MemoriaApp = {
           render();
         });
       });
-
       root.querySelectorAll<HTMLButtonElement>('button[data-rating]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const rating = btn.dataset['rating'] as Rating | undefined;

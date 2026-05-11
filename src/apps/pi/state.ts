@@ -1,9 +1,13 @@
 import { createInitialReviewState, type Rating } from '../../core/spaced-repetition/sm2';
 import { applyReviewToItem, type DrillItem } from '../../core/training/drill-loop';
 
+// Cada PiAssociation representa el ENLACE entre el par con índice `pairIndex`
+// y el par siguiente (`pairIndex + 1`). Es una escena inverosímil que conecta
+// las palabras-imagen de DOS pares consecutivos.
+// El último par no tiene asociación porque no hay siguiente.
 export interface PiAssociation extends DrillItem {
-  readonly pairIndex: number;    // 0-based
-  readonly text: string;         // escena inverosímil del usuario
+  readonly pairIndex: number;    // 0..N-2 (el FROM del enlace)
+  readonly text: string;         // escena que une casillero[par_actual] con casillero[par_siguiente]
 }
 
 export interface PiState {

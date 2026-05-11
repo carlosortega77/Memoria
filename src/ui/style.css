@@ -894,6 +894,94 @@ table.cases tr.fail td.status { color: var(--error); }
   border-top: 1px solid var(--rule-soft);
 }
 
+/* Cadena π — método chain */
+.pi-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: var(--s-3);
+}
+
+.pi-chain-row {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.pi-chain-row.done {
+  background: color-mix(in srgb, var(--amber) 6%, var(--paper));
+}
+
+.pi-chain-row.last {
+  border-bottom: 0;
+  text-align: center;
+}
+
+.pi-pair-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-1);
+}
+
+.pi-pair-head .pi-idx {
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  min-width: 2.5rem;
+}
+
+.pi-pair-head .pi-digits {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  font-size: 1.2rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+  min-width: 2.5rem;
+}
+
+.pi-pair-head .pi-arrow {
+  color: var(--ink-faint);
+  font-size: 1rem;
+}
+
+.pi-image-word {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.pi-image-word.small {
+  font-size: 0.92rem;
+}
+
+.pi-image-word.fallback { font-style: italic; color: var(--ink-faint); }
+.pi-image-word.missing { color: var(--error); font-weight: 600; }
+
+.pi-link-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding-left: 2.7rem;
+  flex-wrap: wrap;
+}
+
+.pi-link-bridge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.pi-link-end {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--ink-faint);
+  padding: var(--s-2) 0;
+}
+
 .pi-row {
   display: grid;
   grid-template-columns: auto auto 1fr;
