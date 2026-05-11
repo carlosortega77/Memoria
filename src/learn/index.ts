@@ -6,6 +6,9 @@ import { lessonMayor } from './lessons/l2-mayor';
 import { lessonCasillero } from './lessons/l3-casillero';
 import { lessonMayorInverso } from './lessons/l4-mayor-inverso';
 import { lessonFabricar } from './lessons/l5-fabricar';
+import { lessonElementos } from './lessons/l6-elementos';
+import { lessonNoVisualizables } from './lessons/l7-no-visualizables';
+import { lessonTelefonoPartido } from './lessons/l8-telefono-partido';
 import { withTransition } from '../ui/transitions';
 
 const CURRICULUM: readonly Lesson[] = [
@@ -14,6 +17,9 @@ const CURRICULUM: readonly Lesson[] = [
   lessonMayorInverso,
   lessonFabricar,
   lessonCasillero,
+  lessonElementos,
+  lessonNoVisualizables,
+  lessonTelefonoPartido,
 ];
 
 export function mountLearn(root: HTMLElement, ctx: AppContext): void {

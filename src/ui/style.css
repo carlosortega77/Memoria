@@ -2359,6 +2359,107 @@ table.cases tr.fail td.status { color: var(--error); }
   margin: var(--s-3) 0 var(--s-4);
 }
 
+/* Lecciones triple — D / E / F */
+.triple-card {
+  margin: var(--s-3) 0;
+  padding: var(--s-3);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--umber);
+}
+
+.triple-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: var(--s-3);
+  padding: var(--s-1) 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  align-items: baseline;
+}
+
+.triple-row:last-child { border-bottom: 0; }
+
+.triple-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.triple-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.triple-value.big {
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 1.6rem;
+}
+
+.triple-value.digit {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 600;
+  font-size: 1.8rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+.triple-value.muted {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+#triple-form, #sustituto-form, #fono-form {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  margin: var(--s-2) 0;
+}
+
+#triple-input, #sustituto-input,
+#fono-p1, #fono-p2 {
+  font: inherit;
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  flex: 1;
+  min-width: 0;
+  padding: var(--s-2) var(--s-3);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font-size: 1.1rem;
+}
+
+#triple-input:focus, #sustituto-input:focus,
+#fono-p1:focus, #fono-p2:focus {
+  outline: none;
+  border-bottom-color: var(--umber);
+}
+
+#triple-form button, #sustituto-form button, #fono-form button {
+  font: inherit;
+  font-family: 'Inter', sans-serif;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.form-plus {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  font-size: 1.4rem;
+  color: var(--umber);
+  align-self: center;
+}
+
 /* Cadena de 20 — visualización + recuperación en frío */
 .chain-scene {
   margin: var(--s-4) 0;
