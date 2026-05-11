@@ -9,6 +9,7 @@ import {
   type TrainerState,
 } from '../core/training/major-trainer';
 import type { Rating } from '../core/spaced-repetition/sm2';
+import { withTransition } from './transitions';
 
 export function mountMajorTrainer(
   root: HTMLElement,
@@ -88,18 +89,22 @@ export function mountMajorTrainer(
     if (!revealed) {
       const reveal = root.querySelector<HTMLButtonElement>('.trainer-reveal');
       reveal?.addEventListener('click', () => {
-        revealed = true;
-        render();
+        withTransition(() => {
+          revealed = true;
+          render();
+        });
       });
     } else {
       root.querySelectorAll<HTMLButtonElement>('button[data-rating]').forEach((btn) => {
         btn.addEventListener('click', () => {
           const rating = btn.dataset['rating'] as Rating | undefined;
           if (!rating) return;
-          state = applyTrainerReview(state, item.id, rating);
-          trainerStore.save(state);
-          revealed = false;
-          render();
+          withTransition(() => {
+            state = applyTrainerReview(state, item.id, rating);
+            trainerStore.save(state);
+            revealed = false;
+            render();
+          });
         });
       });
     }

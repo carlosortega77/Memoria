@@ -4,6 +4,7 @@ import { countDue, pickNextDue } from '../../core/training/drill-loop';
 import type { Rating } from '../../core/spaced-repetition/sm2';
 import { getPairs } from './digits';
 import { createPiStore, type PiStore } from './store';
+import { withTransition } from '../../ui/transitions';
 import {
   applyPiReview,
   clearAssociation,
@@ -187,8 +188,10 @@ export const piApp: MemoriaApp = {
     function attachDrillHandlers(): void {
       const reveal = root.querySelector<HTMLButtonElement>('.trainer-reveal');
       reveal?.addEventListener('click', () => {
-        revealed = true;
-        render();
+        withTransition(() => {
+          revealed = true;
+          render();
+        });
       });
 
       root.querySelectorAll<HTMLButtonElement>('button[data-rating]').forEach((btn) => {
@@ -197,9 +200,11 @@ export const piApp: MemoriaApp = {
           if (!rating) return;
           const item = pickNextDue(state.associations);
           if (!item) return;
-          persist(applyPiReview(state, item.id, rating));
-          revealed = false;
-          render();
+          withTransition(() => {
+            persist(applyPiReview(state, item.id, rating));
+            revealed = false;
+            render();
+          });
         });
       });
     }
@@ -211,9 +216,11 @@ export const piApp: MemoriaApp = {
         btn.addEventListener('click', () => {
           const v = btn.dataset['view'] as View | undefined;
           if (v && v !== view) {
-            view = v;
-            revealed = false;
-            render();
+            withTransition(() => {
+              view = v;
+              revealed = false;
+              render();
+            });
           }
         });
       });

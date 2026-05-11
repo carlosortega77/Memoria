@@ -9,6 +9,7 @@ import { mountCasilleroBuilder } from './casillero-builder';
 import { mountMajorTrainer } from './major-trainer';
 import { mountLearn } from '../learn';
 import { createHashRouter, type Route } from './router';
+import { withTransition } from './transitions';
 
 export interface BootContext {
   registry: AppRegistry;
@@ -49,7 +50,6 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
       <main class="shell">
         <header class="shell-header">
           <h1>Memoria</h1>
-          <p class="tagline">Palacios · Sistema Mayor · Repaso espaciado</p>
         </header>
         <nav class="nav">
           ${navItems
@@ -63,7 +63,7 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
           <div id="view-mount"></div>
         </section>
         <footer class="shell-footer">
-          <small>v0.1 — Capa 1 completa</small>
+          <small>Códice Mnemónico · v0.2</small>
         </footer>
       </main>
     `;
@@ -92,7 +92,7 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
     }
   }
 
-  router.onChange(renderShell);
+  router.onChange((next) => withTransition(() => renderShell(next)));
   renderShell(router.current());
 }
 

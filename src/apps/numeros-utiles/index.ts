@@ -9,6 +9,7 @@ import {
   removeNumero,
   type NumerosState,
 } from './state';
+import { withTransition } from '../../ui/transitions';
 
 type View = 'lista' | 'drill';
 
@@ -168,8 +169,10 @@ export const numerosApp: MemoriaApp = {
     function attachDrillHandlers(): void {
       const reveal = root.querySelector<HTMLButtonElement>('.trainer-reveal');
       reveal?.addEventListener('click', () => {
-        revealed = true;
-        render();
+        withTransition(() => {
+          revealed = true;
+          render();
+        });
       });
       root.querySelectorAll<HTMLButtonElement>('button[data-rating]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -177,9 +180,11 @@ export const numerosApp: MemoriaApp = {
           if (!rating) return;
           const item = pickNextDue(state.entries);
           if (!item) return;
-          persist(applyNumerosReview(state, item.id, rating));
-          revealed = false;
-          render();
+          withTransition(() => {
+            persist(applyNumerosReview(state, item.id, rating));
+            revealed = false;
+            render();
+          });
         });
       });
     }
@@ -191,9 +196,11 @@ export const numerosApp: MemoriaApp = {
         btn.addEventListener('click', () => {
           const v = btn.dataset['view'] as View | undefined;
           if (v && v !== view) {
-            view = v;
-            revealed = false;
-            render();
+            withTransition(() => {
+              view = v;
+              revealed = false;
+              render();
+            });
           }
         });
       });

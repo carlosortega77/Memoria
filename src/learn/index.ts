@@ -4,6 +4,7 @@ import type { Lesson } from './types';
 import { lessonCadena } from './lessons/l1-cadena';
 import { lessonMayor } from './lessons/l2-mayor';
 import { lessonCasillero } from './lessons/l3-casillero';
+import { withTransition } from '../ui/transitions';
 
 const CURRICULUM: readonly Lesson[] = [lessonCadena, lessonMayor, lessonCasillero];
 
@@ -67,8 +68,10 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
         const id = btn.dataset['id'];
         const lesson = CURRICULUM.find((l) => l.id === id);
         if (lesson) {
-          activeLesson = lesson;
-          renderActive();
+          withTransition(() => {
+            activeLesson = lesson;
+            renderActive();
+          });
         }
       });
     });
@@ -82,8 +85,10 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
         if (activeLesson) progressStore.markComplete(activeLesson.id);
       },
       goBack: () => {
-        activeLesson = null;
-        renderIndex();
+        withTransition(() => {
+          activeLesson = null;
+          renderIndex();
+        });
       },
     });
   }

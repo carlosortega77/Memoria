@@ -1,7 +1,7 @@
 // Estrategia: stale-while-revalidate.
 // Sirve cache instantáneo y, en paralelo, refresca desde red.
 // Heredado de Doomsday-repo: evita el ritual del bump de cache cada deploy.
-const CACHE = 'memoria-v1';
+const CACHE = 'memoria-v2-codice';
 const PRECACHE = [
   './',
   './index.html',
@@ -9,6 +9,8 @@ const PRECACHE = [
   './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './fonts/fraunces.woff2',
+  './fonts/inter.woff2',
 ];
 
 self.addEventListener('install', (e) => {

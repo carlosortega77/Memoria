@@ -9,6 +9,7 @@ import {
   type FechasState,
 } from './state';
 import { compressYear } from './year-shortcut';
+import { withTransition } from '../../ui/transitions';
 
 type View = 'lista' | 'drill';
 
@@ -174,8 +175,10 @@ export const fechasApp: MemoriaApp = {
     function attachDrillHandlers(): void {
       const reveal = root.querySelector<HTMLButtonElement>('.trainer-reveal');
       reveal?.addEventListener('click', () => {
-        revealed = true;
-        render();
+        withTransition(() => {
+          revealed = true;
+          render();
+        });
       });
       root.querySelectorAll<HTMLButtonElement>('button[data-rating]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -183,9 +186,11 @@ export const fechasApp: MemoriaApp = {
           if (!rating) return;
           const item = pickNextDue(state.entries);
           if (!item) return;
-          persist(applyFechasReview(state, item.id, rating));
-          revealed = false;
-          render();
+          withTransition(() => {
+            persist(applyFechasReview(state, item.id, rating));
+            revealed = false;
+            render();
+          });
         });
       });
     }
@@ -197,9 +202,11 @@ export const fechasApp: MemoriaApp = {
         btn.addEventListener('click', () => {
           const v = btn.dataset['view'] as View | undefined;
           if (v && v !== view) {
-            view = v;
-            revealed = false;
-            render();
+            withTransition(() => {
+              view = v;
+              revealed = false;
+              render();
+            });
           }
         });
       });
