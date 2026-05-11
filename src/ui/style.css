@@ -394,3 +394,146 @@ table.cases tr.fail td.status { color: var(--danger); font-weight: 600; }
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
+/* Subnav (interno a apps) */
+.subnav {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.subnav-item {
+  font: inherit;
+  padding: 0.4rem 0.85rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.12s;
+}
+
+.subnav-item:hover { color: var(--fg); background: white; }
+.subnav-item.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* π app */
+.pi-intro p {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pi-intro .pi-fallback-note { font-size: 0.8rem; }
+
+.pi-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.pi-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.pi-row.done {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+
+.pi-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 3rem;
+  line-height: 1.15;
+}
+
+.pi-idx {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pi-digits {
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pi-words {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  min-width: 8rem;
+}
+
+.pi-arrow { color: var(--muted); }
+
+.pi-word.fallback {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.pi-word.missing {
+  color: var(--danger);
+}
+
+.pi-assoc {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  width: 100%;
+  min-width: 0;
+}
+
+.pi-assoc:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: white;
+}
+
+.pi-reveal {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  background: var(--success-bg);
+  border-radius: 8px;
+}
+
+.pi-reveal-digits {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.pi-reveal-image {
+  font-size: 1.4rem;
+  margin-top: 0.25rem;
+  color: var(--fg);
+}
+
+.pi-reveal-assoc {
+  font-style: italic;
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}

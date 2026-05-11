@@ -2,6 +2,7 @@ import { AppRegistry } from './core/app-contract';
 import { createCasilleroStore } from './core/casillero/store';
 import { createTrainerStore } from './core/training/store';
 import { createLocalStorage } from './persistence/local-storage';
+import { piApp } from './apps/pi';
 import { mountApp } from './ui/app';
 import './ui/style.css';
 
@@ -10,10 +11,8 @@ const casilleroStore = createCasilleroStore(storage);
 const trainerStore = createTrainerStore(storage);
 const registry = new AppRegistry();
 
-// Las apps de Capa 2 se registrarán aquí cuando existan:
-//   registry.register(piApp);
-//   registry.register(fechasApp);
-//   registry.register(numerosApp);
+// Apps de Capa 2 — registro centralizado.
+registry.register(piApp);
 
 const root = document.querySelector<HTMLDivElement>('#app');
 if (!root) throw new Error('Missing #app root element');
