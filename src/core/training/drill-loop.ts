@@ -8,6 +8,8 @@ export interface DrillItem {
   readonly review: ReviewState;
 }
 
+export type Scheduler = (state: ReviewState, rating: Rating, now: number) => ReviewState;
+
 export function pickNextDue<T extends DrillItem>(
   items: readonly T[],
   now: number = Date.now(),
@@ -25,14 +27,24 @@ export function countDue<T extends DrillItem>(
   return items.filter((i) => isDue(i.review, now)).length;
 }
 
+export function applyReviewToItemWith<T extends DrillItem>(
+  items: readonly T[],
+  itemId: string,
+  rating: Rating,
+  scheduler: Scheduler,
+  now: number = Date.now(),
+): readonly T[] {
+  return items.map((i) => {
+    if (i.id !== itemId) return i;
+    return { ...i, review: scheduler(i.review, rating, now) } as T;
+  });
+}
+
 export function applyReviewToItem<T extends DrillItem>(
   items: readonly T[],
   itemId: string,
   rating: Rating,
   now: number = Date.now(),
 ): readonly T[] {
-  return items.map((i) => {
-    if (i.id !== itemId) return i;
-    return { ...i, review: applySm2(i.review, rating, now) } as T;
-  });
+  return applyReviewToItemWith(items, itemId, rating, applySm2, now);
 }

@@ -1,7 +1,8 @@
 import type { UserCasillero } from '../casillero/state';
 import { createInitialReviewState, type Rating } from '../spaced-repetition/sm2';
+import { applyCampayoReview } from '../spaced-repetition/campayo-schedule';
 import {
-  applyReviewToItem,
+  applyReviewToItemWith,
   countDue as countDueGeneric,
   pickNextDue as pickNextDueGeneric,
   type DrillItem,
@@ -83,7 +84,7 @@ export function applyTrainerReview(
   now: number = Date.now(),
 ): TrainerState {
   return {
-    items: applyReviewToItem(state.items, itemId, rating, now),
+    items: applyReviewToItemWith(state.items, itemId, rating, applyCampayoReview, now),
     updatedAt: now,
   };
 }

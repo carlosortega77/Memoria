@@ -780,8 +780,19 @@ table.cases tr.fail td.status { color: var(--error); }
   color: var(--ink-faint);
   text-transform: uppercase;
   letter-spacing: 0.14em;
+  margin-bottom: var(--s-1);
+  font-weight: 600;
+}
+
+.trainer-stage {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.74rem;
+  color: var(--umber);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin-bottom: var(--s-4);
   font-weight: 600;
+  font-style: italic;
 }
 
 .trainer-prompt {

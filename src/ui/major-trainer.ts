@@ -11,6 +11,7 @@ import {
   type TrainerState,
 } from '../core/training/major-trainer';
 import type { Rating } from '../core/spaced-repetition/sm2';
+import { describeCampayoStage } from '../core/spaced-repetition/campayo-schedule';
 import { createChronometer, formatElapsed } from '../core/training/chronometer';
 import { withTransition } from './transitions';
 
@@ -104,6 +105,7 @@ export function mountMajorTrainer(
     root.innerHTML = `
       <div class="trainer-card">
         <div class="trainer-due">${due} pendiente${due === 1 ? '' : 's'}</div>
+        <div class="trainer-stage">${describeCampayoStage(item.review)}</div>
         ${promptHtml}
         ${renderItemTiming(item)}
         ${
