@@ -4,9 +4,17 @@ import type { Lesson } from './types';
 import { lessonCadena } from './lessons/l1-cadena';
 import { lessonMayor } from './lessons/l2-mayor';
 import { lessonCasillero } from './lessons/l3-casillero';
+import { lessonMayorInverso } from './lessons/l4-mayor-inverso';
+import { lessonFabricar } from './lessons/l5-fabricar';
 import { withTransition } from '../ui/transitions';
 
-const CURRICULUM: readonly Lesson[] = [lessonCadena, lessonMayor, lessonCasillero];
+const CURRICULUM: readonly Lesson[] = [
+  lessonCadena,
+  lessonMayor,
+  lessonMayorInverso,
+  lessonFabricar,
+  lessonCasillero,
+];
 
 export function mountLearn(root: HTMLElement, ctx: AppContext): void {
   const progressStore = createLearnProgressStore(ctx.storage);

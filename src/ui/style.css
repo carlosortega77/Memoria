@@ -2043,10 +2043,16 @@ table.cases tr.fail td.status { color: var(--error); }
   font-family: 'Fraunces', Georgia, serif;
   font-variation-settings: 'opsz' 144, 'wght' 500, 'SOFT' 30;
   font-size: 5rem;
-  color: var(--rubric);
+  color: var(--umber);
   font-variant-numeric: tabular-nums slashed-zero;
   line-height: 1;
   letter-spacing: -0.03em;
+}
+
+.quiz-phoneme {
+  font-variant-numeric: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .quiz-hint {
@@ -2104,6 +2110,220 @@ table.cases tr.fail td.status { color: var(--error); }
 .lesson-celebrate {
   text-align: center;
   padding: var(--s-6) var(--s-4);
+}
+
+/* Fabricar palabra-imagen */
+.builder-stats {
+  display: flex;
+  gap: var(--s-4);
+  margin: var(--s-4) 0 var(--s-3);
+  padding: var(--s-3);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+}
+
+.bs-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.bs-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.bs-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 72, 'wght' 600;
+  font-size: 1.5rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums;
+}
+
+.fabricar-card {
+  margin: var(--s-4) 0;
+  padding: var(--s-5) var(--s-4);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--umber);
+  text-align: center;
+}
+
+.fabricar-target {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 600, 'SOFT' 30;
+  font-size: 5rem;
+  color: var(--umber);
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.fabricar-pattern {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin: var(--s-2) 0 var(--s-4);
+  letter-spacing: 0.04em;
+}
+
+#fabricar-form, #flash-form {
+  display: flex;
+  gap: var(--s-2);
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+#fabricar-input, #flash-input {
+  font: inherit;
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 500;
+  flex: 1;
+  padding: var(--s-2) var(--s-3);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+#fabricar-input:focus, #flash-input:focus {
+  outline: none;
+  border-bottom-color: var(--umber);
+}
+
+#fabricar-input.shake, #flash-input.shake {
+  animation: input-shake 220ms cubic-bezier(.36,.07,.19,.97);
+}
+
+@keyframes input-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+
+#fabricar-form button, #flash-form button {
+  font: inherit;
+  font-family: 'Inter', sans-serif;
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.fabricar-feedback {
+  margin: var(--s-3) auto 0;
+  padding: var(--s-2) var(--s-3);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  max-width: 32rem;
+}
+
+.fabricar-feedback.ok {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 10%, var(--paper));
+  border-left: 2px solid var(--amber);
+}
+
+.fabricar-feedback.fail {
+  color: var(--error);
+  background: color-mix(in srgb, var(--error) 8%, var(--paper));
+  border-left: 2px solid var(--error);
+}
+
+/* Flash mode */
+.flash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: var(--ink);
+  color: var(--paper);
+  margin-bottom: 0;
+}
+
+.flash-score {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 700;
+  font-size: 3rem;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  line-height: 0.9;
+}
+
+.flash-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-1);
+  flex: 1;
+  max-width: 12rem;
+}
+
+.flash-bar {
+  width: 100%;
+  height: 4px;
+  background: color-mix(in srgb, var(--paper) 20%, var(--ink));
+  overflow: hidden;
+}
+
+.flash-bar-fill {
+  height: 100%;
+  background: var(--amber);
+  transition: width 1s linear;
+}
+
+.flash-seconds {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 1rem;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.fabricar-card.flash {
+  border-top: 0;
+  margin-top: 0;
+}
+
+.flash-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  font-style: italic;
+  text-align: center;
+  margin-top: var(--s-2);
+}
+
+.flash-record {
+  display: inline-block;
+  padding: var(--s-2) var(--s-4);
+  background: color-mix(in srgb, var(--amber) 15%, var(--paper));
+  border: 2px solid var(--amber);
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 600;
+  font-size: 1.05rem;
+  color: var(--umber);
+  margin: var(--s-3) 0;
+}
+
+.flash-record-old {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: var(--s-3) 0;
 }
 
 /* Ceremonia de cierre de lección */
