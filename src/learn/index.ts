@@ -11,6 +11,7 @@ const CURRICULUM: readonly Lesson[] = [lessonCadena, lessonMayor, lessonCasiller
 export function mountLearn(root: HTMLElement, ctx: AppContext): void {
   const progressStore = createLearnProgressStore(ctx.storage);
   let activeLesson: Lesson | null = null;
+  let completionFor: Lesson | null = null;
 
   function renderIndex(): void {
     const completedCount = CURRICULUM.filter((l) => progressStore.isComplete(l.id)).length;
@@ -20,8 +21,7 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
     root.innerHTML = `
       <div class="learn-index">
         <p class="learn-lead">
-          Currículum guiado: del concepto base al primer casillero funcional.
-          Cada lección dura 5-10 minutos. El progreso se guarda en tu dispositivo.
+          Currículum guiado del códice. Cada lección dura 5-10 minutos. El progreso se guarda en este dispositivo.
         </p>
 
         <div class="progress">
@@ -34,7 +34,7 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
             const done = progressStore.isComplete(l.id);
             return `
               <li class="lesson-card ${done ? 'done' : ''}" data-id="${l.id}">
-                <div class="lesson-num">${String(i + 1).padStart(2, '0')}</div>
+                <div class="lesson-num">${romanNumeral(i + 1)}</div>
                 <div class="lesson-body">
                   <div class="lesson-title-row">
                     <h4>${l.title}</h4>
@@ -55,7 +55,7 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
           completedCount === totalCount
             ? `
               <p class="lesson-celebrate-msg">
-                Has completado todas las lecciones disponibles. Más vendrán en próximas versiones.
+                Has completado todas las lecciones disponibles. Más vendrán en próximas versiones del códice.
               </p>
             `
             : ''
@@ -82,16 +82,97 @@ export function mountLearn(root: HTMLElement, ctx: AppContext): void {
     activeLesson.mount(root, {
       ctx,
       markComplete: () => {
-        if (activeLesson) progressStore.markComplete(activeLesson.id);
+        if (activeLesson) {
+          progressStore.markComplete(activeLesson.id);
+          completionFor = activeLesson;
+        }
       },
       goBack: () => {
         withTransition(() => {
-          activeLesson = null;
-          renderIndex();
+          if (completionFor) {
+            renderCeremony(completionFor);
+          } else {
+            activeLesson = null;
+            renderIndex();
+          }
         });
       },
     });
   }
 
+  function renderCeremony(lesson: Lesson): void {
+    const idx = CURRICULUM.findIndex((l) => l.id === lesson.id);
+    const next = CURRICULUM[idx + 1];
+    const isLast = !next;
+
+    root.innerHTML = isLast
+      ? `
+        <div class="lesson-ceremony">
+          <div class="ceremony-stamp">
+            <span>FIN DEL</span>
+            <span>APRENDIZAJE BASE</span>
+          </div>
+          <p class="ceremony-line">
+            Has cerrado el currículum del códice. Tu sistema está en pie:
+            tabla del Mayor, casillero base, encadenamiento inverosímil.
+            Lo demás se construye con uso.
+          </p>
+          <div class="ceremony-actions">
+            <button id="ceremony-back" class="btn-secondary">Al índice</button>
+          </div>
+        </div>
+      `
+      : `
+        <div class="lesson-ceremony">
+          <p class="ceremony-eyebrow">Capítulo siguiente</p>
+          <div class="ceremony-capital">${escapeHtml((next.title[0] ?? '').toUpperCase())}</div>
+          <h3 class="ceremony-title">${escapeHtml(next.title)}</h3>
+          <p class="ceremony-desc">${escapeHtml(next.description)}</p>
+          <div class="ceremony-actions">
+            <button id="ceremony-back" class="btn-secondary">Al índice</button>
+            <button id="ceremony-next" class="btn-primary">Empezar →</button>
+          </div>
+        </div>
+      `;
+
+    root.querySelector<HTMLButtonElement>('#ceremony-back')?.addEventListener('click', () => {
+      withTransition(() => {
+        completionFor = null;
+        activeLesson = null;
+        renderIndex();
+      });
+    });
+    root.querySelector<HTMLButtonElement>('#ceremony-next')?.addEventListener('click', () => {
+      withTransition(() => {
+        completionFor = null;
+        activeLesson = next;
+        renderActive();
+      });
+    });
+  }
+
   renderIndex();
+}
+
+function romanNumeral(n: number): string {
+  const table: ReadonlyArray<[number, string]> = [
+    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+  ];
+  let out = '';
+  let rem = n;
+  for (const [v, s] of table) {
+    while (rem >= v) {
+      out += s;
+      rem -= v;
+    }
+  }
+  return out;
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
 }

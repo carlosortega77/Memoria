@@ -37,12 +37,20 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
     validRoutes,
   });
 
-  const navItems: Array<{ route: Route; label: string }> = [
-    { route: 'learn', label: 'Aprender' },
-    { route: 'builder', label: 'Construir' },
-    { route: 'trainer', label: 'Entrenar' },
-    ...boot.registry.list().map((a) => ({ route: a.route, label: a.name })),
-    { route: 'diag', label: 'Diagnóstico' },
+  const navItems: Array<{ route: Route; label: string; roman: string }> = [
+    { route: 'learn', label: 'Aprender', roman: 'I' },
+    { route: 'builder', label: 'Construir', roman: 'II' },
+    { route: 'trainer', label: 'Entrenar', roman: 'III' },
+    ...boot.registry.list().map((a, idx) => ({
+      route: a.route,
+      label: a.name,
+      roman: ['IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][idx] ?? '',
+    })),
+    {
+      route: 'diag',
+      label: 'El Taller',
+      roman: ['IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][boot.registry.list().length] ?? '',
+    },
   ];
 
   function renderShell(active: Route): void {
@@ -55,7 +63,9 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
           ${navItems
             .map(
               (n) =>
-                `<a class="nav-item ${active === n.route ? 'active' : ''}" href="#/${n.route}">${n.label}</a>`,
+                `<a class="nav-item ${active === n.route ? 'active' : ''}" href="#/${n.route}">
+                  <span class="nav-roman">${n.roman}.</span><span class="nav-label">${n.label}</span>
+                </a>`,
             )
             .join('')}
         </nav>
@@ -119,18 +129,22 @@ function mountDiag(
   const apps = registry.list();
 
   root.innerHTML = `
+    <div class="taller-intro">
+      <p>Las herramientas y el inventario del códice. Aquí no se entrena — aquí se afila.</p>
+    </div>
+
     <section>
-      <h2>Codificador</h2>
+      <h2>El codificador</h2>
       <div class="preset-card">
-        <strong>Verificación contra el libro</strong>
-        <p>Ejemplos literales de "Desarrolla una mente prodigiosa".</p>
+        <strong>Pruebas de imprenta</strong>
+        <p>Ejemplos literales del libro de Campayo, codificados por nuestro motor.</p>
         <table class="cases">
           ${cases
             .map(
               (c) => `<tr class="${c.ok ? 'ok' : 'fail'}">
                 <td>${c.word}</td><td>→</td><td>${c.got.join(' ')}</td>
                 <td class="meaning">${c.meaning}</td>
-                <td class="status">${c.ok ? 'OK' : 'FAIL'}</td>
+                <td class="status">${c.ok ? '✓ OK' : '✗ FAIL'}</td>
               </tr>`,
             )
             .join('')}
@@ -139,7 +153,7 @@ function mountDiag(
     </section>
 
     <section>
-      <h2>Preset Mayor</h2>
+      <h2>El mapa</h2>
       <div class="preset-card">
         <strong>${MAJOR_CAMPAYO.name}</strong>
         <p>${MAJOR_CAMPAYO.description}</p>
@@ -155,7 +169,7 @@ function mountDiag(
     </section>
 
     <section>
-      <h2>Capacidad</h2>
+      <h2>Inventario</h2>
       <div class="preset-card">
         <ul class="stats">
           <li><span>${slotCount}</span> casillas base</li>
@@ -173,7 +187,7 @@ function mountDiag(
           : apps
               .map(
                 (a) =>
-                  `<li><strong>${a.name}</strong> (${a.id}) — ${a.description} <a href="#/${a.route}">→</a></li>`,
+                  `<li><strong>${a.name}</strong> · ${a.description} <a href="#/${a.route}">→</a></li>`,
               )
               .join('')}
       </ul>
