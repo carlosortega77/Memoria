@@ -110,15 +110,35 @@ export const fechasApp: MemoriaApp = {
 
       return `
         <details class="how-it-works">
-          <summary>Cómo funciona</summary>
-          <p>
-            Campayo comprime el año antes de codificarlo:
-            <span class="rule">s. XX → 2 últimos dígitos</span>,
-            <span class="rule">1001-2000 → 3 últimos</span>,
-            <span class="rule">resto → 4 completos</span>.
-          </p>
-          <p>
-            Escribe el año, el evento y una <strong>asociación</strong> donde aparezca una palabra cuyos dígitos Mayor formen el año comprimido. El codificador comprueba ✓ si encaja.
+          <summary>Cómo funciona — con ejemplo</summary>
+
+          <p>Memorizar un año "en crudo" (1989) es brutal porque el cerebro no tiene a qué agarrarse. La técnica te baja el coste en tres movimientos.</p>
+
+          <ol class="how-steps">
+            <li>
+              <strong>Comprime el año.</strong> Descarta los dígitos que tu cerebro deduce solo:
+              <ul class="how-rules">
+                <li><span class="rule">s. XX (1901-2000)</span> → conserva los <strong>2 últimos</strong>. <code>1989 → 89</code></li>
+                <li><span class="rule">2º milenio (1001-2000)</span> → conserva los <strong>3 últimos</strong>. <code>1492 → 492</code></li>
+                <li><span class="rule">Resto</span> (antes de 1001, después de 2000) → los <strong>4 completos</strong>. <code>753 a.C. → 753</code></li>
+              </ul>
+            </li>
+            <li>
+              <strong>Encódialos con el Mayor.</strong> Cada dígito tiene unas consonantes. Buscas una palabra-imagen con esas consonantes en ese orden (las vocales son libres).
+              <div class="how-example">
+                <code>89</code> → 8 = <code>CH·J·G</code>, 9 = <code>V·B·P</code> → <strong>CHIVO</strong> (Ch·V = 8·9 ✓)
+              </div>
+            </li>
+            <li>
+              <strong>Construye una escena inverosímil</strong> entre el evento y la palabra-imagen.
+              <div class="how-example">
+                <em>Caída del Muro de Berlín:</em> "Un <strong>chivo</strong> gigante salta sobre el Muro y de cada cuerno le cuelgan trozos de hormigón."
+              </div>
+            </li>
+          </ol>
+
+          <p class="how-coda">
+            Al escribir la asociación, el codificador busca en tu texto una secuencia de consonantes Mayor que coincida con el año comprimido. Si encuentra exactamente esos dígitos → <span class="check">✓ codifica</span>. Si no, te enseña qué dígitos producen tus consonantes para que ajustes la palabra-imagen.
           </p>
         </details>
 

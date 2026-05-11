@@ -122,9 +122,30 @@ export const numerosApp: MemoriaApp = {
 
       return `
         <details class="how-it-works">
-          <summary>Cómo funciona</summary>
-          <p>
-            Selecciona el <strong>tipo</strong> (móvil, DNI, IBAN, matrícula…). El número se mostrará con su formato canónico. La <strong>asociación</strong> debe contener palabras cuyas consonantes Mayor formen los dígitos del número. Verás en directo cómo la asociación cuadra con el objetivo.
+          <summary>Cómo funciona — con ejemplo</summary>
+
+          <p>Un número largo (un IBAN, un móvil) no se puede memorizar dígito a dígito. La técnica lo trocea en <strong>pares</strong> y cada par lo convierte en una palabra-imagen de tu casillero.</p>
+
+          <ol class="how-steps">
+            <li>
+              <strong>Elige el tipo.</strong> El número se muestra con su formato canónico — los grupos visuales (3-2-2-2 en móvil, 4-4-4-4 en IBAN, 8+letra en DNI) <em>ya</em> son parte de la mnemotécnica: tu cerebro recuerda mejor los bloques.
+            </li>
+            <li>
+              <strong>Trocea en pares.</strong> Cada par de dígitos se corresponde con una casilla del casillero (las que elegiste en <strong>Construir</strong>).
+              <div class="how-example">
+                DNI <code>12 34 56 78</code> → casilla 12 (<strong>tuna</strong>) · casilla 34 (<strong>moco</strong>) · casilla 56 (<strong>lazo</strong>) · casilla 78 (<strong>ficha</strong>)
+              </div>
+            </li>
+            <li>
+              <strong>Construye una escena inverosímil</strong> que enlace tu etiqueta con las palabras-imagen en orden.
+              <div class="how-example">
+                <em>Etiqueta: "Mi DNI":</em> "Saco mi DNI de una <strong>tuna</strong> rebosante de <strong>mocos</strong>, lo rodea un <strong>lazo</strong> rojo y al final está pegado a una <strong>ficha</strong> de casino."
+              </div>
+            </li>
+          </ol>
+
+          <p class="how-coda">
+            El <strong>teatro del codificador</strong> debajo del formulario te valida en directo: escribe la asociación y verás dígito a dígito qué consonantes Mayor está produciendo tu texto. Los dígitos que aciertas se encienden en ámbar. Los que no cuadran aparecen subrayados en rojo. Cuando todos los dígitos coinciden, el codificador te lo confirma.
           </p>
         </details>
 
