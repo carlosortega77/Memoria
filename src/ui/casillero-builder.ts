@@ -6,6 +6,7 @@ import {
   getSelection,
   setSelection,
 } from '../core/casillero/state';
+import { findParentesco } from '../core/casillero/parentesco';
 import { withTransition } from './transitions';
 
 export function mountCasilleroBuilder(
@@ -133,7 +134,13 @@ export function mountCasilleroBuilder(
     const chips = slot.options
       .map((opt) => {
         const active = sel && !sel.isCustom && sel.chosenWord === opt;
-        return `<button class="chip ${active ? 'active' : ''}" data-pos="${slot.position}" data-word="${escapeHtml(opt)}" type="button">${escapeHtml(opt)}</button>`;
+        const warnings = findParentesco(opt, state.selections, slot.position);
+        const warning = warnings[0];
+        const warnAttr = warning
+          ? ` data-warn="${escapeHtml(`${warning.otherWord} en ${String(warning.otherPosition).padStart(2, '0')} — ${warning.reason}`)}"`
+          : '';
+        const warnClass = warning ? ' has-parentesco' : '';
+        return `<button class="chip${active ? ' active' : ''}${warnClass}"${warnAttr} data-pos="${slot.position}" data-word="${escapeHtml(opt)}" type="button">${escapeHtml(opt)}</button>`;
       })
       .join('');
 
@@ -141,6 +148,25 @@ export function mountCasilleroBuilder(
       sel && sel.isCustom
         ? `<button class="chip custom active" data-pos="${slot.position}" data-clear="1" type="button">${escapeHtml(sel.chosenWord)} ×</button>`
         : `<button class="chip mine" data-pos="${slot.position}" data-mine="1" type="button">+ Tu palabra</button>`;
+
+    // Aviso del parentesco para la selección actual (si la hay)
+    let activeWarningHtml = '';
+    if (sel) {
+      const warnings = findParentesco(sel.chosenWord, state.selections, slot.position);
+      if (warnings.length > 0) {
+        const w = warnings[0]!;
+        activeWarningHtml = `
+          <div class="parentesco-warning">
+            <span class="pw-icon">⚠</span>
+            <span class="pw-text">
+              <strong>${escapeHtml(sel.chosenWord)}</strong> se parece a <strong>${escapeHtml(w.otherWord)}</strong>
+              en la casilla ${String(w.otherPosition).padStart(2, '0')} (${escapeHtml(w.reason)}).
+              Considera otra opción para evitar confusión.
+            </span>
+          </div>
+        `;
+      }
+    }
 
     return `
       <div class="casillero-drawer">
@@ -152,6 +178,7 @@ export function mountCasilleroBuilder(
           ${chips}
           ${customChip}
         </div>
+        ${activeWarningHtml}
       </div>
     `;
   }

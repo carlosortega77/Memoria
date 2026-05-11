@@ -534,6 +534,53 @@ table.cases tr.fail td.status { color: var(--error); }
   padding: var(--s-1) var(--s-3);
 }
 
+.chip.has-parentesco {
+  border-style: dashed;
+  position: relative;
+}
+
+.chip.has-parentesco::after {
+  content: '⚠';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  font-size: 0.7rem;
+  background: var(--error);
+  color: var(--paper);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.parentesco-warning {
+  margin-top: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  background: color-mix(in srgb, var(--error) 8%, var(--paper));
+  border-left: 3px solid var(--error);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.pw-icon {
+  font-size: 1.1rem;
+  color: var(--error);
+  line-height: 1;
+}
+
+.pw-text strong {
+  color: var(--error);
+  font-weight: 600;
+}
+
 .slot {
   display: flex;
   align-items: center;
