@@ -6,6 +6,7 @@ import type { CasilleroStore } from '../core/casillero/store';
 import type { TrainerStore } from '../core/training/store';
 import type { Storage } from '../persistence/local-storage';
 import { mountCasilleroBuilder } from './casillero-builder';
+import { mountInicio } from './inicio';
 import { mountSesionDiaria } from './sesion-diaria';
 import { mountLearn } from '../learn';
 import { createHashRouter, type Route } from './router';
@@ -18,7 +19,7 @@ export interface BootContext {
   trainerStore: TrainerStore;
 }
 
-const BUILTIN_ROUTES = ['learn', 'builder', 'trainer', 'diag'] as const;
+const BUILTIN_ROUTES = ['inicio', 'learn', 'builder', 'trainer', 'diag'] as const;
 
 export function mountApp(root: HTMLElement, boot: BootContext): void {
   const encoder = createMajorEncoder(MAJOR_CAMPAYO);
@@ -33,11 +34,12 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
   const validRoutes = [...BUILTIN_ROUTES, ...appRoutes];
 
   const router = createHashRouter({
-    defaultRoute: 'learn',
+    defaultRoute: 'inicio',
     validRoutes,
   });
 
   const navItems: Array<{ route: Route; label: string; roman: string }> = [
+    { route: 'inicio', label: 'Inicio', roman: '' },
     { route: 'learn', label: 'Lección', roman: 'I' },
     { route: 'builder', label: 'Construir', roman: 'II' },
     { route: 'trainer', label: 'Sesión diaria', roman: 'III' },
@@ -64,7 +66,7 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
             .map(
               (n) =>
                 `<a class="nav-item ${active === n.route ? 'active' : ''}" href="#/${n.route}">
-                  <span class="nav-roman">${n.roman}.</span><span class="nav-label">${n.label}</span>
+                  ${n.roman ? `<span class="nav-roman">${n.roman}.</span>` : ''}<span class="nav-label">${n.label}</span>
                 </a>`,
             )
             .join('')}
@@ -82,6 +84,9 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
     if (!mount) return;
 
     switch (active) {
+      case 'inicio':
+        mountInicio(mount);
+        return;
       case 'learn':
         mountLearn(mount, appCtx);
         return;

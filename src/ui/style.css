@@ -2170,6 +2170,273 @@ table.cases tr.fail td.status { color: var(--error); }
   padding: var(--s-6) var(--s-4);
 }
 
+/* ============================================================
+   Inicio — la página de bienvenida y teoría
+   ============================================================ */
+
+.inicio {
+  max-width: 64ch;
+  margin: 0 auto;
+}
+
+.inicio-hero {
+  margin-bottom: var(--s-6);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.inicio-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--umber);
+  font-weight: 700;
+  margin: 0 0 var(--s-3);
+}
+
+.inicio-h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 144, 'wght' 500, 'SOFT' 20;
+  font-size: 2.6rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-3);
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.inicio-tagline {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 52ch;
+}
+
+.inicio-section {
+  margin-bottom: var(--s-6);
+}
+
+.inicio-section h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--s-3);
+  padding-bottom: var(--s-1);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.inicio-section p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 var(--s-3);
+  text-wrap: pretty;
+}
+
+.inicio-step {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--umber);
+  font-weight: 600;
+  margin: var(--s-4) 0 var(--s-2);
+}
+
+.inicio-mapping {
+  margin: var(--s-3) 0;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 28rem;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.inicio-mapping td {
+  padding: var(--s-1) var(--s-3);
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+
+.inicio-mapping td:first-child {
+  color: var(--umber);
+  font-weight: 600;
+}
+
+.inicio-aside {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: var(--s-2) 0 var(--s-3);
+}
+
+.inicio-example {
+  margin: var(--s-3) 0;
+  padding: var(--s-3) var(--s-4);
+  background: color-mix(in srgb, var(--amber) 7%, var(--paper));
+  border-left: 3px solid var(--amber);
+}
+
+.inicio-example p {
+  margin: 0;
+}
+
+.inicio-example p + p {
+  margin-top: var(--s-2);
+}
+
+.inicio-example p:first-child {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 400;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.inicio-example-meta {
+  font-size: 0.88rem !important;
+  color: var(--ink-soft);
+  font-style: normal !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.inicio-uses, .inicio-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inicio-uses li, .inicio-timeline li {
+  position: relative;
+  padding-left: var(--s-4);
+  margin-bottom: var(--s-2);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.inicio-uses li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--umber);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.inicio-timeline li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  background: var(--umber);
+  border-radius: 50%;
+}
+
+.inicio-tour {
+  list-style: none;
+  counter-reset: tour;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.inicio-tour li {
+  counter-increment: tour;
+  position: relative;
+  padding-left: 2.6rem;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.inicio-tour li::before {
+  content: counter(tour, upper-roman) '.';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 36, 'wght' 600;
+  font-style: italic;
+  color: var(--umber);
+  font-size: 1.05rem;
+}
+
+.inicio-tour strong {
+  color: var(--ink);
+}
+
+.inicio-honest {
+  margin-top: var(--s-4) !important;
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--rule);
+  font-style: italic;
+  color: var(--ink-soft) !important;
+}
+
+.inicio-cta {
+  margin-top: var(--s-6);
+  padding: var(--s-5) var(--s-5);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--umber);
+  text-align: center;
+}
+
+.inicio-cta-h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 96, 'wght' 500;
+  font-size: 1.8rem;
+  margin: 0 0 var(--s-2);
+  border: 0;
+  padding: 0;
+}
+
+.inicio-cta p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'opsz' 24, 'wght' 400;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-4);
+}
+
+.inicio-cta-btn {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: var(--s-3) var(--s-5);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: all 180ms cubic-bezier(.2,.6,.2,1);
+}
+
+.inicio-cta-btn:hover {
+  background: var(--umber);
+  border-color: var(--umber);
+}
+
+@media (max-width: 600px) {
+  .inicio-h1 { font-size: 2rem; }
+  .inicio-tagline { font-size: 1.05rem; }
+  .inicio-section h2 { font-size: 1.35rem; }
+}
+
 /* Sesión diaria — la rutina prescrita de 15 min */
 .sesion-header h3 {
   font-family: 'Fraunces', Georgia, serif;
