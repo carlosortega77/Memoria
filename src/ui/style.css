@@ -2170,8 +2170,8 @@ table.cases tr.fail td.status { color: var(--error); }
   padding: var(--s-6) var(--s-4);
 }
 
-/* Dojo diario — la rutina prescrita de 15 min */
-.dojo-header h3 {
+/* Sesión diaria — la rutina prescrita de 15 min */
+.sesion-header h3 {
   font-family: 'Fraunces', Georgia, serif;
   font-variation-settings: 'opsz' 96, 'wght' 500;
   font-size: 2rem;
@@ -2179,7 +2179,7 @@ table.cases tr.fail td.status { color: var(--error); }
   letter-spacing: -0.02em;
 }
 
-.dojo-header p {
+.sesion-header p {
   font-family: 'Fraunces', Georgia, serif;
   font-variation-settings: 'opsz' 24, 'wght' 400;
   font-style: italic;
@@ -2189,7 +2189,7 @@ table.cases tr.fail td.status { color: var(--error); }
   max-width: 52ch;
 }
 
-.dojo-phases {
+.sesion-phases {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -2198,7 +2198,7 @@ table.cases tr.fail td.status { color: var(--error); }
   gap: var(--s-2);
 }
 
-.dojo-phase {
+.sesion-phase {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: var(--s-4);
@@ -2263,7 +2263,7 @@ table.cases tr.fail td.status { color: var(--error); }
 }
 
 /* Runner — cabecera para fases activas */
-.dojo-runner-head {
+.sesion-runner-head {
   display: flex;
   align-items: baseline;
   gap: var(--s-4);
@@ -2274,11 +2274,11 @@ table.cases tr.fail td.status { color: var(--error); }
   flex-wrap: wrap;
 }
 
-.dojo-runner-head.simple {
+.sesion-runner-head.simple {
   justify-content: space-between;
 }
 
-.dojo-runner-head .btn-secondary {
+.sesion-runner-head .btn-secondary {
   background: transparent;
   color: var(--paper);
   border-color: var(--paper);
@@ -2315,12 +2315,12 @@ table.cases tr.fail td.status { color: var(--error); }
 }
 
 /* Resultado de una fase */
-.dojo-result {
+.sesion-result {
   text-align: center;
   padding: var(--s-5) var(--s-4);
 }
 
-.dojo-result h3 {
+.sesion-result h3 {
   font-family: 'Fraunces', Georgia, serif;
   font-variation-settings: 'opsz' 96, 'wght' 500;
   font-size: 2rem;

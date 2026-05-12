@@ -6,7 +6,7 @@ import type { CasilleroStore } from '../core/casillero/store';
 import type { TrainerStore } from '../core/training/store';
 import type { Storage } from '../persistence/local-storage';
 import { mountCasilleroBuilder } from './casillero-builder';
-import { mountDojoDiario } from './dojo-diario';
+import { mountSesionDiaria } from './sesion-diaria';
 import { mountLearn } from '../learn';
 import { createHashRouter, type Route } from './router';
 import { withTransition } from './transitions';
@@ -38,9 +38,9 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
   });
 
   const navItems: Array<{ route: Route; label: string; roman: string }> = [
-    { route: 'learn', label: 'Dojo', roman: 'I' },
+    { route: 'learn', label: 'Lección', roman: 'I' },
     { route: 'builder', label: 'Construir', roman: 'II' },
-    { route: 'trainer', label: 'Dojo diario', roman: 'III' },
+    { route: 'trainer', label: 'Sesión diaria', roman: 'III' },
     ...boot.registry.list().map((a, idx) => ({
       route: a.route,
       label: a.name,
@@ -89,7 +89,7 @@ export function mountApp(root: HTMLElement, boot: BootContext): void {
         mountCasilleroBuilder(mount, CASILLERO_CAMPAYO, boot.casilleroStore);
         return;
       case 'trainer':
-        mountDojoDiario(mount, CASILLERO_CAMPAYO, boot.casilleroStore, boot.trainerStore);
+        mountSesionDiaria(mount, CASILLERO_CAMPAYO, boot.casilleroStore, boot.trainerStore);
         return;
       case 'diag':
         mountDiag(mount, boot.registry, encoder);

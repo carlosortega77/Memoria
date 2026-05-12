@@ -17,7 +17,7 @@ function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]!;
 }
 
-export function mountDojoDiario(
+export function mountSesionDiaria(
   root: HTMLElement,
   preset: CasilleroPreset,
   casilleroStore: CasilleroStore,
@@ -44,13 +44,13 @@ export function mountDojoDiario(
 
   function renderLanding(): void {
     root.innerHTML = `
-      <div class="dojo-diario">
-        <header class="dojo-header">
-          <h3>Dojo diario</h3>
+      <div class="sesion-diaria">
+        <header class="sesion-header">
+          <h3>Sesión diaria</h3>
           <p>15 minutos al día — la rutina de Campayo adaptada. Cuatro fases en orden. Hazlas todas o las que tengas tiempo.</p>
         </header>
-        <ol class="dojo-phases">
-          <li class="dojo-phase" data-phase="calentamiento">
+        <ol class="sesion-phases">
+          <li class="sesion-phase" data-phase="calentamiento">
             <div class="dp-num">I</div>
             <div class="dp-body">
               <h4>Calentamiento</h4>
@@ -59,16 +59,16 @@ export function mountDojoDiario(
             </div>
             <button class="dp-go" data-phase="calentamiento">Empezar</button>
           </li>
-          <li class="dojo-phase" data-phase="construccion">
+          <li class="sesion-phase" data-phase="construccion">
             <div class="dp-num">II</div>
             <div class="dp-body">
               <h4>Construcción</h4>
               <p>Fabrica 3 palabras-imagen cronometradas. Vas al modo flash de la lección.</p>
               <small>≈ 3 min</small>
             </div>
-            <a class="dp-go" href="#/learn">Abrir Dojo →</a>
+            <a class="dp-go" href="#/learn">Abrir Lección →</a>
           </li>
-          <li class="dojo-phase" data-phase="bloque">
+          <li class="sesion-phase" data-phase="bloque">
             <div class="dp-num">III</div>
             <div class="dp-body">
               <h4>Bloque del día</h4>
@@ -77,7 +77,7 @@ export function mountDojoDiario(
             </div>
             <button class="dp-go" data-phase="bloque">Empezar</button>
           </li>
-          <li class="dojo-phase" data-phase="cierre">
+          <li class="sesion-phase" data-phase="cierre">
             <div class="dp-num">IV</div>
             <div class="dp-body">
               <h4>Cierre ritual</h4>
@@ -175,8 +175,8 @@ export function mountDojoDiario(
             : '';
 
       root.innerHTML = `
-        <div class="dojo-runner">
-          <header class="dojo-runner-head">
+        <div class="sesion-runner">
+          <header class="sesion-runner-head">
             <span class="drh-label">Calentamiento</span>
             <span class="drh-progress">${qIndex + 1} / ${questions.length}</span>
             <span class="drh-score">${correct} ✓</span>
@@ -225,7 +225,7 @@ export function mountDojoDiario(
     function renderResult(totalMs: number, correctCount: number): void {
       const pct = Math.round((correctCount / questions.length) * 100);
       root.innerHTML = `
-        <div class="dojo-result">
+        <div class="sesion-result">
           <h3>Calentamiento completado</h3>
           <div class="result-stats">
             <div class="rs-item"><span class="rs-label">Tiempo total</span><span class="rs-value">${formatElapsed(totalMs)}</span></div>
@@ -233,7 +233,7 @@ export function mountDojoDiario(
             <div class="rs-item"><span class="rs-label">Precisión</span><span class="rs-value">${pct}%</span></div>
           </div>
           <div class="lesson-actions">
-            <button class="btn-secondary" id="back">← Al dojo</button>
+            <button class="btn-secondary" id="back">← Volver</button>
             <button class="btn-primary" id="next-phase" data-next="bloque">Siguiente: Bloque →</button>
           </div>
         </div>
@@ -254,8 +254,8 @@ export function mountDojoDiario(
   // ---------- FASE 3: BLOQUE DEL DÍA ----------
   function renderBloque(): void {
     root.innerHTML = `
-      <div class="dojo-runner-wrap">
-        <header class="dojo-runner-head simple">
+      <div class="sesion-runner-wrap">
+        <header class="sesion-runner-head simple">
           <span class="drh-label">Bloque del día — drill del casillero</span>
           <button class="btn-secondary" id="bloque-back">← Volver</button>
         </header>
@@ -282,7 +282,7 @@ export function mountDojoDiario(
           <h3>Necesitas al menos ${CIERRE_QUESTIONS} casillas</h3>
           <p>Ve a <strong>Construir</strong> y elige al menos ${CIERRE_QUESTIONS} palabras antes del cierre ritual.</p>
           <div class="lesson-actions">
-            <button class="btn-secondary" id="cierre-back">← Al dojo</button>
+            <button class="btn-secondary" id="cierre-back">← Volver</button>
           </div>
         </div>
       `;
@@ -350,8 +350,8 @@ export function mountDojoDiario(
             : '';
 
       root.innerHTML = `
-        <div class="dojo-runner">
-          <header class="dojo-runner-head">
+        <div class="sesion-runner">
+          <header class="sesion-runner-head">
             <span class="drh-label">Cierre ritual</span>
             <span class="drh-progress">${qIndex + 1} / ${picks.length}</span>
             <span class="drh-score">${correct} ✓</span>
@@ -402,7 +402,7 @@ export function mountDojoDiario(
     function renderResult(totalMs: number, correctCount: number): void {
       const pct = Math.round((correctCount / picks.length) * 100);
       root.innerHTML = `
-        <div class="dojo-result">
+        <div class="sesion-result">
           <h3>Cierre completado</h3>
           <div class="result-stats">
             <div class="rs-item"><span class="rs-label">Tiempo total</span><span class="rs-value">${formatElapsed(totalMs)}</span></div>
@@ -411,7 +411,7 @@ export function mountDojoDiario(
           </div>
           <p class="cierre-coda">Has cerrado la rutina del día. Vuelve mañana.</p>
           <div class="lesson-actions">
-            <button class="btn-primary" id="back">← Al dojo</button>
+            <button class="btn-primary" id="back">← Volver</button>
           </div>
         </div>
       `;
